@@ -9,15 +9,16 @@ import java.util.List;
 @Repository
 public class PlayerDb {
 
-    private Player player1 = Player.builder().id("001").name("samBam").build();
-    private Player player2 = Player.builder().id("002").name("Felix").build();
-    private Player player3 = Player.builder().id("003").name("Andrea").build();
-
     private List<Player> playerList;
 
     public PlayerDb() {
-        this.playerList = new ArrayList<>();
+        this.playerList = new ArrayList<>(List.of(
+                Player.builder().id("001").name("samBam").build(),
+                Player.builder().id("002").name("Felix").build(),
+                Player.builder().id("003").name("Andrea").build()
+        ));
     }
+
 
     public void add(Player newPlayer) {
         this.playerList.add(newPlayer);
@@ -30,4 +31,5 @@ public class PlayerDb {
     public void clearDb() {
         playerList.clear();
     }
+
 }
