@@ -46,7 +46,7 @@ class PlayerControllerTest {
 
         //WHEN
         ResponseEntity<Player[]> response = restTemplate.getForEntity(
-                "http://localhost:" + port + "players", Player[].class);
+                "http://localhost:" + port + "/players", Player[].class);
         HttpStatus statusCode = response.getStatusCode();
         Player[] players = response.getBody();
 
