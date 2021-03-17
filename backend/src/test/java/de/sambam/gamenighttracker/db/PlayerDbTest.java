@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.is;
 class PlayerDbTest {
 
     @Test
-    @DisplayName("add method should new player to db")
+    @DisplayName("add method should add new player to db")
     public void addNewPlayerToDbTest() {
         //GIVEN
         PlayerDb playerDb = new PlayerDb();
