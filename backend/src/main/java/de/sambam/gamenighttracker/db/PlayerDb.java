@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public class PlayerDb {
 
-    private List<Player> playerList;
+    private final List<Player> playerList;
 
     public PlayerDb() {
         this.playerList = new ArrayList<>(List.of(
