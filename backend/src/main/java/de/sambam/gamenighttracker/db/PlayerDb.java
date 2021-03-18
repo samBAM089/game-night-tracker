@@ -13,7 +13,7 @@ public class PlayerDb {
     private Player player2 = Player.builder().id("002").name("Felix").build();
     private Player player3 = Player.builder().id("003").name("Andrea").build();
 
-    private List<Player> playerList;
+    private final List<Player> playerList;
 
     public PlayerDb() {
         this.playerList = new ArrayList<>();

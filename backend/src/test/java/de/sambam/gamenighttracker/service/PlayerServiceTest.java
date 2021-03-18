@@ -24,7 +24,7 @@ class PlayerServiceTest {
         PlayerDb playerDb = new PlayerDb();
         playerDb.add(Player.builder().id("001").name("samBAM").build());
         playerDb.add(Player.builder().id("002").name("Andrea").build());
-        
+
 
         PlayerService playerService = new PlayerService(playerDb);
 
@@ -35,5 +35,25 @@ class PlayerServiceTest {
         //THEN
         assertTrue(playerList.contains(Player.builder().id("003").name("Thomas").build()));
 
+    }
+
+    @Test
+    @DisplayName("listAllPlayers should return all players")
+    public void listAllPlayersTest() {
+        //GIVEN
+        PlayerDb playerDb = new PlayerDb();
+        playerDb.add(Player.builder().id("001").name("samBAM").build());
+        playerDb.add(Player.builder().id("002").name("Andrea").build());
+
+        PlayerService playerService = new PlayerService(playerDb);
+
+        //WHEN
+        List<Player> playerList = playerService.listAllPlayers();
+
+        //THEN
+        assertTrue(playerList.containsAll(List.of(
+                Player.builder().id("001").name("samBAM").build(),
+                Player.builder().id("002").name("Andrea").build()
+        )));
     }
 }
