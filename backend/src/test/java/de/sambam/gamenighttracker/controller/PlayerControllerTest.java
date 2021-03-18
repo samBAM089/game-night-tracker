@@ -10,8 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
-
 
 import java.util.List;
 
@@ -46,7 +44,7 @@ class PlayerControllerTest {
 
         //WHEN
         ResponseEntity<Player[]> response = restTemplate.getForEntity(
-                "http://localhost:" + port + "players", Player[].class);
+                "http://localhost:" + port + "/players", Player[].class);
         HttpStatus statusCode = response.getStatusCode();
         Player[] players = response.getBody();
 
