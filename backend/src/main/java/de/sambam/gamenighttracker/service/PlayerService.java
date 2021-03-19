@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PlayerService {
 
@@ -23,4 +25,7 @@ public class PlayerService {
         playerDb.add(newPlayer);
     }
 
+    public List<Player> listAllPlayers() {
+        return playerDb.getPlayers();
+    }
 }

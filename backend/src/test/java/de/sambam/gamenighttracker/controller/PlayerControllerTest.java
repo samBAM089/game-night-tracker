@@ -13,12 +13,14 @@ import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DisplayName("post request should add new player to db")
+@DisplayName("Testing all available requests to the backend")
 class PlayerControllerTest {
 
     @LocalServerPort
@@ -36,9 +38,29 @@ class PlayerControllerTest {
     }
 
     @Test
+    @DisplayName("get endpoint should show all players in db")
+    public void getAllPlayers() {
+        //GIVEN
+        playerDb.add(Player.builder().id("001").name("Richard").build());
+        playerDb.add(Player.builder().id("002").name("Tom").build());
+
+        //WHEN
+        ResponseEntity<Player[]> response = restTemplate.getForEntity(
+                "http://localhost:" + port + "/players", Player[].class);
+        HttpStatus statusCode = response.getStatusCode();
+        Player[] players = response.getBody();
+
+        //THEN
+        assertEquals(HttpStatus.OK, statusCode);
+        assertTrue(playerDb.getPlayers().containsAll(List.of(
+                Player.builder().id("001").name("Richard").build(),
+                Player.builder().id("002").name("Tom").build()
+        )));
+    }
+
+    @Test
     @DisplayName("post endpoint should add new player to db")
     public void postNewPlayerTest() {
-
         //GIVEN
         HttpEntity<Player> requestEntity = new HttpEntity<>(
                 Player.builder().id("009").name("Tom").build());

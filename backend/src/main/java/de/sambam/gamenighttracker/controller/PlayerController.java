@@ -18,7 +18,13 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
+    @GetMapping
+    public List<Player> listAllPlayers() {
+        return playerService.listAllPlayers();
+    }
+
     @PostMapping
+
     public Player addNewPlayer(@RequestBody Player newPlayer) {
         playerService.addPlayer(newPlayer);
         return newPlayer;
