@@ -24,7 +24,6 @@ public class PlayerController {
     }
 
     @PostMapping
-
     public Player addNewPlayer(@RequestBody Player newPlayer) {
         playerService.addPlayer(newPlayer);
         return newPlayer;
