@@ -22,7 +22,6 @@ public class GameDb {
     public Game add(Game newGame) {
         this.gameList.add(newGame);
         return newGame;
-
     }
 
     public List<Game> getGameList() {
