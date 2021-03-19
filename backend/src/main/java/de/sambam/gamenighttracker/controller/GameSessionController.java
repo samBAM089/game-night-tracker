@@ -4,10 +4,9 @@ import de.sambam.gamenighttracker.db.GameSessionDb;
 import de.sambam.gamenighttracker.model.GameSession;
 import de.sambam.gamenighttracker.service.GameSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/gamesessions")
@@ -27,4 +26,10 @@ public class GameSessionController {
         gameSessionService.addNewGameSession(gameSessionToAdd);
         return gameSessionToAdd;
     }
+
+    @GetMapping
+    public List<GameSession> getGameSessionList() {
+        return gameSessionService.listAllGameSessions();
+    }
+
 }

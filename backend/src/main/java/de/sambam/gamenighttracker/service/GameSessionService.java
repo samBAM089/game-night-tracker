@@ -5,6 +5,8 @@ import de.sambam.gamenighttracker.model.GameSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GameSessionService {
 
@@ -18,5 +20,9 @@ public class GameSessionService {
 
     public void addNewGameSession(GameSession gameSessionToAdd) {
         gameSessionDb.addGameSession(gameSessionToAdd);
+    }
+
+    public List<GameSession> listAllGameSessions() {
+        return gameSessionDb.getGameSessionList();
     }
 }
