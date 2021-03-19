@@ -11,6 +11,8 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class GameServiceTest {
 
@@ -33,8 +35,13 @@ class GameServiceTest {
     @DisplayName("listAllGames should return all the games from db")
     public void listAllGamesTest() {
         //GIVEN
-        GameDb gameDb = new GameDb();
-        gameDb.add(Game.builder().name("CloudAge").releaseYear("2020").build());
+        GameDb gameDb = mock(GameDb.class);
+        when(gameDb.getGameList()).thenReturn(List.of(
+                Game.builder().name("Cubitos").releaseYear("2020").build(),
+                Game.builder().name("CloudAge").releaseYear("2020").build(),
+                Game.builder().name("Barrage").releaseYear("2019").build(),
+                Game.builder().name("CloudAge").releaseYear("2020").build()));
+
         GameService gameService = new GameService(gameDb);
 
         //WHEN
