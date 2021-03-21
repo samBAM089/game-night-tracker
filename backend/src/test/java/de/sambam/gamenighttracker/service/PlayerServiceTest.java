@@ -45,8 +45,10 @@ class PlayerServiceTest {
         playerDb.add(Player.builder().id("001").name("samBAM").build());
         playerDb.add(Player.builder().id("002").name("Andrea").build());
 
+        PlayerService playerService = new PlayerService(playerDb);
+
         //WHEN
-        List<Player> playerList = playerDb.getPlayers();
+        List<Player> playerList = playerService.listAllPlayers();
 
         //THEN
         assertTrue(playerList.containsAll(List.of(
