@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,6 +56,26 @@ class GameControllerTest {
         assertThat(postResponse.getStatusCode(), is(HttpStatus.OK));
         assertEquals(postResponse.getBody(), Game.builder().name("Scrabble").build());
         assertTrue(gameDb.getGameList().contains(Game.builder().name("Scrabble").build()));
+    }
 
+    @Test
+    @DisplayName("get request should list all games from gameDb")
+    public void listAllGamesFromDbTest() {
+        //GIVEN
+        this.gameDb.add(Game.builder().name("Cluedo").build());
+        this.gameDb.add(Game.builder().name("Mikado").build());
+
+        //WHEN
+        ResponseEntity<Game[]> getResponse = restTemplate.getForEntity(
+                "http://localhost:" + port + "/games", Game[].class);
+        Game[] allTheGamesinDb = getResponse.getBody();
+        Game expectedGame1 = Game.builder().name("Cluedo").build();
+        Game expectedGame2 = Game.builder().name("Mikado").build();
+
+        //THEN
+        assertThat(getResponse.getStatusCode(), is(HttpStatus.OK));
+        assertEquals(2, allTheGamesinDb.length);
+        assertEquals(expectedGame1, allTheGamesinDb[0]);
+        assertEquals(expectedGame2, allTheGamesinDb[1]);
     }
 }

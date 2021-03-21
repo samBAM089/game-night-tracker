@@ -5,6 +5,8 @@ import de.sambam.gamenighttracker.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GameService {
 
@@ -17,5 +19,9 @@ public class GameService {
 
     public Game addNewGame(Game newGame) {
         return gameDb.add(newGame);
+    }
+
+    public List<Game> listAllGames() {
+        return gameDb.getGameList();
     }
 }
