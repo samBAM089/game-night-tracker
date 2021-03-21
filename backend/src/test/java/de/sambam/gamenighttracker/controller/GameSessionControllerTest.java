@@ -6,6 +6,7 @@ import de.sambam.gamenighttracker.model.Player;
 import jdk.jfr.Description;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,7 +47,7 @@ class GameSessionControllerTest {
     }
 
     @Test
-    @Description("post endpoint should add new game session to db")
+    @DisplayName("post endpoint should add new game session to db")
     public void addNewGameSessionTest() {
         //GIVEN
         HttpEntity<GameSession> requestEntity = new HttpEntity<>(
@@ -73,7 +74,7 @@ class GameSessionControllerTest {
     }
 
     @Test
-    @Description("get request should return list of all logged game sessions")
+    @DisplayName("get request should return list of all logged game sessions")
     public void getGameSessionListTest() {
         //GIVEN
         Player player1 = Player.builder().name("samBAM").build();
