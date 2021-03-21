@@ -10,8 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 
 import java.util.List;
 
@@ -61,7 +61,6 @@ class PlayerControllerTest {
     @Test
     @DisplayName("post endpoint should add new player to db")
     public void postNewPlayerTest() {
-
         //GIVEN
         HttpEntity<Player> requestEntity = new HttpEntity<>(
                 Player.builder().id("009").name("Tom").build());
