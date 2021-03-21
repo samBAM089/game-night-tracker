@@ -24,4 +24,8 @@ public class GameService {
     public List<Game> listAllGames() {
         return gameDb.getGameList();
     }
+
+    public void deleteGame(String gameToDelete) {
+        gameDb.delete(gameToDelete);
+    }
 }

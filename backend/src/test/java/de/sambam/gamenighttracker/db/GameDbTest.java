@@ -1,6 +1,7 @@
 package de.sambam.gamenighttracker.db;
 
 import de.sambam.gamenighttracker.model.Game;
+import de.sambam.gamenighttracker.model.GameSession;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -44,5 +45,23 @@ class GameDbTest {
         assertTrue(gameDb.getGameList().contains(newGame));
     }
 
+    @Test
+    @DisplayName("delete() should remove player from Db")
+    public void deleteTest() {
+        //GIVEN
+        GameDb gameDb = new GameDb();
+        gameDb.add(Game.builder().name("Cubitos").releaseYear("2020").build());
+        gameDb.add(Game.builder().name("CloudAge").releaseYear("2020").build());
+
+        //WHEN
+        String gameToDelete = "CloudAge";
+        gameDb.delete(gameToDelete);
+        List<Game> updatedGameList = gameDb.getGameList();
+
+        //THEN
+        assertTrue(!updatedGameList.contains(
+                Game.builder().name("CloudAge").releaseYear("2020").build()
+        ));
+    }
     
 }

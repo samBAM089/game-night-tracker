@@ -11,8 +11,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class GameServiceTest {
 
@@ -55,6 +54,21 @@ class GameServiceTest {
 
         //THEN
         assertThat(allTheGames, is(expectedList));
+    }
+
+
+    @Test
+    @DisplayName("deleteGame() should remove game from Db")
+    public void deleteGameTest() {
+        //GIVEN
+        GameDb gameDb = mock(GameDb.class);
+
+        //WHEN
+        GameService gameService = new GameService(gameDb);
+        gameService.deleteGame("a");
+
+        //THEN
+        verify(gameDb).delete("a");
     }
 }
 
