@@ -10,30 +10,24 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 class PlayerServiceTest {
 
+    PlayerDb playerDb = mock(PlayerDb.class);
 
     @Test
     @DisplayName("addPlayer should add new player to playerDb")
     public void addPlayerTester() {
         //GIVEN
-        PlayerDb playerDb = new PlayerDb();
-        playerDb.add(Player.builder().id("001").name("samBAM").build());
-        playerDb.add(Player.builder().id("002").name("Andrea").build());
-
-
         PlayerService playerService = new PlayerService(playerDb);
 
         //WHEN
         playerService.addPlayer(Player.builder().id("003").name("Thomas").build());
-        List<Player> playerList = playerDb.getPlayers();
 
         //THEN
-        assertTrue(playerList.contains(Player.builder().id("003").name("Thomas").build()));
+        verify(playerDb).add(Player.builder().id("003").name("Thomas").build());
 
     }
 
@@ -41,9 +35,9 @@ class PlayerServiceTest {
     @DisplayName("listAllPlayers should return all players")
     public void listAllPlayersTest() {
         //GIVEN
-        PlayerDb playerDb = new PlayerDb();
-        playerDb.add(Player.builder().id("001").name("samBAM").build());
-        playerDb.add(Player.builder().id("002").name("Andrea").build());
+        when(playerDb.getPlayers()).thenReturn(List.of(
+                Player.builder().id("001").name("samBAM").build(),
+                Player.builder().id("002").name("Andrea").build()));
 
         PlayerService playerService = new PlayerService(playerDb);
 

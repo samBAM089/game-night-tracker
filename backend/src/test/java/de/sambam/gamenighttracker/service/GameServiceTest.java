@@ -11,24 +11,24 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class GameServiceTest {
+
+    GameDb gameDb = mock(GameDb.class);
 
     @Test
     @DisplayName("addNewGame method should add a game to the Db")
     public void addNewGameTester() {
         //GIVEN
-        GameDb gameDb = new GameDb();
         GameService gameService = new GameService(gameDb);
 
         //WHEN
-        Game newGame = Game.builder().name("Monopoly").build();
-        gameService.addNewGame(newGame);
+        Game gameToAdd = new Game();
+        gameService.addNewGame(gameToAdd);
 
         //THEN
-        assertTrue(gameDb.getGameList().contains(Game.builder().name("Monopoly").build()));
+        verify(gameDb).add(gameToAdd);
     }
 
     @Test
