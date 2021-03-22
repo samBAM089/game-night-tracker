@@ -15,10 +15,9 @@ import java.util.List;
 public class GameSession {
 
     private String id;
-    private String gameName;
-    private String thumbnailUrl;
-    private String date;
+    private String startDate;
+    private int duration;
     private List<Player> playerList;
-    private String duration;
-
+    private String sessionState;
+    private String winnerPlayerId;
 }
