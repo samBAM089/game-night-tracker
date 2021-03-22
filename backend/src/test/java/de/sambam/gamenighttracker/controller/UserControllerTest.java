@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 
 import java.util.List;
@@ -43,7 +44,7 @@ class UserControllerTest {
     public void getAllGamesFromDbTest() {
         //GIVEN
         userDb.addUser(User.builder()
-                .id("003")
+                .id("1")
                 .userName("Sanne")
                 .playedGames(List.of(
                         Game.builder()
@@ -58,8 +59,6 @@ class UserControllerTest {
                 .build()
         );
 
-        UserService userService = new UserService(userDb);
-
         //WHEN
         ResponseEntity<Game[]> getResponse = restTemplate.getForEntity(
                 "http://localhost:" + port + "/user/games", Game[].class);
@@ -68,7 +67,7 @@ class UserControllerTest {
         //THEN
         assertEquals(getResponse.getStatusCode(), HttpStatus.OK);
         assertThat(gameList.length, is(2));
-        assertTrue(userService.listAllGames().containsAll(List.of(
+        assertThat(List.of(gameList), containsInAnyOrder(
                 Game.builder()
                         .name("Bonfire")
                         .releaseYear("2020")
@@ -76,7 +75,6 @@ class UserControllerTest {
                 Game.builder()
                         .name("Calico")
                         .releaseYear("2020")
-                        .build())
-        ));
+                        .build()));
     }
 }
