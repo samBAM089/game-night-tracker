@@ -7,10 +7,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 
 class UserServiceTest {
 
@@ -20,32 +22,26 @@ class UserServiceTest {
     @DisplayName("listAllGames() should return all games from Db")
     public void listAllGamesTest() {
         //GIVEN
-        when(userDb.getLogInUser()).thenReturn(User.builder()
-                .id("001")
+        when(userDb.getUser("1")).thenReturn(Optional.of(User.builder()
+                .id("1")
                 .userName("admin")
-                .password("boardgamegeek")
                 .playedGames(List.of(
                         Game.builder()
-                                .releaseYear("2020")
-                                .name("CloudAge")
-                                .build(),
-                        Game.builder()
-                                .releaseYear("1933")
-                                .name("Monopoly")
-                                .build()
-                ))
-                .build());
+                                .name("MauMau")
+                                .build()))
+                .build()));
+
 
         UserService userService = new UserService(userDb);
 
         //WHEN
-        List<Game> allTheGames = userService.listAllGames();
+        Optional<List<Game>> listOptional = userService.listAllGames("1");
 
         //THEN
-        assertTrue(allTheGames.containsAll(List.of(
-                Game.builder().name("CloudAge").releaseYear("2020").build(),
-                Game.builder().name("Monopoly").releaseYear("1933").build()
-        )));
-    }
+        assertTrue(listOptional.equals(Optional.of(List.of(
+                Game.builder()
+                        .name("MauMau")
+                        .build()))));
 
+    }
 }
