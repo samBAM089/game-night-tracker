@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
 public class Player {
     private String id;
     private String name;
-    private String profilePic;
-    private String gamesPlayed;
-    private String mostPlayedGames;
-    private String winRatio;
-    private String totalPlayTime;
+    private String color;
+    private int score;
 }

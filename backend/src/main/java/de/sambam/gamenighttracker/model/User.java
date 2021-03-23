@@ -5,19 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GameSession {
-
+public class User {
     private String id;
-    private String startDate;
-    private int duration;
-    private List<Player> playerList;
-    private String sessionState;
-    private String winnerPlayerId;
+    private String userName;
+    private String password;
+    private List<Game> playedGames;
 }
