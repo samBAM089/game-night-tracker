@@ -2,6 +2,7 @@ package de.sambam.gamenighttracker.service;
 
 import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.Game;
+import de.sambam.gamenighttracker.model.GameSession;
 import de.sambam.gamenighttracker.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,6 @@ class UserServiceTest {
                                 .build()))
                 .build()));
 
-
         UserService userService = new UserService(userDb);
 
         //WHEN
@@ -43,5 +43,65 @@ class UserServiceTest {
                         .name("MauMau")
                         .build()))));
 
+    }
+
+    @Test
+    @DisplayName("listAllSessions() should return all game sessions")
+    public void listAllSessionsTest() {
+        //GIVEN
+        when(userDb.findById("1")).thenReturn(Optional.of(User.builder()
+                .id("1")
+                .userName("admin")
+                .playedGames(List.of(
+                        Game.builder()
+                                .name("MauMau")
+                                .gameSessionList(List.of(
+                                        GameSession.builder()
+                                                .id("1")
+                                                .sessionState("DONE")
+                                                .winnerPlayerId("Sanne")
+                                                .build(),
+                                        GameSession.builder()
+                                                .id("2")
+                                                .sessionState("DONE")
+                                                .winnerPlayerId("Mario")
+                                                .build()
+                                ))
+                                .build(),
+                        Game.builder()
+                                .name("Monopoly")
+                                .gameSessionList(List.of(
+                                        GameSession.builder()
+                                                .id("3")
+                                                .sessionState("DONE")
+                                                .winnerPlayerId("Hanno")
+                                                .build()
+                                ))
+                                .build()))
+                .build()));
+
+        UserService userService = new UserService(userDb);
+
+        //WHEN
+        Optional<List<GameSession>> gameSessionList = userService.listAllSessions("1");
+
+        //THEN
+        assertTrue(gameSessionList.equals(Optional.of(List.of(
+                GameSession.builder()
+                        .id("1")
+                        .sessionState("DONE")
+                        .winnerPlayerId("Sanne")
+                        .build(),
+                GameSession.builder()
+                        .id("2")
+                        .sessionState("DONE")
+                        .winnerPlayerId("Mario")
+                        .build(),
+                GameSession.builder()
+                        .id("3")
+                        .sessionState("DONE")
+                        .winnerPlayerId("Hanno")
+                        .build()
+        ))));
     }
 }

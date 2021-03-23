@@ -2,6 +2,8 @@ package de.sambam.gamenighttracker.controller;
 
 import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.Game;
+import de.sambam.gamenighttracker.model.GameSession;
+import de.sambam.gamenighttracker.model.Player;
 import de.sambam.gamenighttracker.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,10 +45,48 @@ class UserControllerTest {
                         Game.builder()
                                 .name("Bonfire")
                                 .releaseYear("2020")
+                                .gameSessionList(List.of(
+                                        GameSession.builder()
+                                                .id("1")
+                                                .sessionState("DONE")
+                                                .winnerPlayerId("Mario")
+                                                .playerList(List.of(
+                                                        Player.builder()
+                                                                .name("Mario")
+                                                                .color("red")
+                                                                .score(123)
+                                                                .build(),
+                                                        Player.builder()
+                                                                .name("Sanne")
+                                                                .color("blue")
+                                                                .score(122)
+                                                                .build()
+                                                ))
+                                                .build()
+                                ))
                                 .build(),
                         Game.builder()
                                 .name("Calico")
                                 .releaseYear("2020")
+                                .gameSessionList(List.of(
+                                        GameSession.builder()
+                                                .id("2")
+                                                .sessionState("DONE")
+                                                .winnerPlayerId("Mario")
+                                                .playerList(List.of(
+                                                        Player.builder()
+                                                                .name("Mario")
+                                                                .color("red")
+                                                                .score(10)
+                                                                .build(),
+                                                        Player.builder()
+                                                                .name("Sanne")
+                                                                .color("blue")
+                                                                .score(9)
+                                                                .build()
+                                                ))
+                                                .build()
+                                ))
                                 .build())
                 )
                 .build()
@@ -77,4 +117,51 @@ class UserControllerTest {
                         .releaseYear("2020")
                         .build()));
     }
+
+    @Test
+    @DisplayName("GET request to /user/gamesessions should return all game sessions")
+    public void getGameSessionsListTest() {
+        //WHEN
+        ResponseEntity<GameSession[]> getResponse = testRestTemplate.getForEntity(
+                "http://localhost:" + port + "user/gamesessions", GameSession[].class);
+        GameSession[] sessionList = getResponse.getBody();
+
+        //THEN
+        assertEquals(getResponse.getStatusCode(), HttpStatus.OK);
+        assertThat(sessionList.length, is(2));
+        assertThat(List.of(sessionList), containsInAnyOrder(
+                GameSession.builder()
+                        .id("1")
+                        .sessionState("DONE")
+                        .winnerPlayerId("Mario")
+                        .playerList(List.of(
+                                Player.builder()
+                                        .name("Mario")
+                                        .color("red")
+                                        .score(123)
+                                        .build(),
+                                Player.builder()
+                                        .name("Sanne")
+                                        .color("blue")
+                                        .score(122)
+                                        .build()))
+                        .build(),
+                GameSession.builder()
+                        .id("2")
+                        .sessionState("DONE")
+                        .winnerPlayerId("Mario")
+                        .playerList(List.of(
+                                Player.builder()
+                                        .name("Mario")
+                                        .color("red")
+                                        .score(10)
+                                        .build(),
+                                Player.builder()
+                                        .name("Sanne")
+                                        .color("blue")
+                                        .score(9)
+                                        .build()))
+                        .build()));
+    }
+
 }

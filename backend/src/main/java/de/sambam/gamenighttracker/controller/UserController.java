@@ -25,8 +25,15 @@ public class UserController {
     }
 
     @GetMapping({"/games"})
-    public List<Game> gameList() {
+    public List<Game> getGameList() {
         return userService.listAllGames("1")
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+    }
+
+
+    @GetMapping({"/gamesessions"})
+    public List<GameSession> getGameSessionsList() {
+        return userService.listAllSessions("1")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
