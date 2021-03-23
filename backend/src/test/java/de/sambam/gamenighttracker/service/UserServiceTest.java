@@ -22,7 +22,7 @@ class UserServiceTest {
     @DisplayName("listAllGames() should return all games from Db")
     public void listAllGamesTest() {
         //GIVEN
-        when(userDb.getUser("1")).thenReturn(Optional.of(User.builder()
+        when(userDb.findById("1")).thenReturn(Optional.of(User.builder()
                 .id("1")
                 .userName("admin")
                 .playedGames(List.of(

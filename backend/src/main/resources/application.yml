@@ -1,2 +1,4 @@
-server:
-  port:
+spring:
+  data:
+    mongoDb:
+      database: gameNightTracker
