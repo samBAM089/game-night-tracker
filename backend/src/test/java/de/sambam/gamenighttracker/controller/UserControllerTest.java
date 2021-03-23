@@ -3,7 +3,6 @@ package de.sambam.gamenighttracker.controller;
 import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.Game;
 import de.sambam.gamenighttracker.model.User;
-import de.sambam.gamenighttracker.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,21 +28,15 @@ class UserControllerTest {
     private int port;
 
     @Autowired
-    TestRestTemplate restTemplate;
+    private TestRestTemplate testRestTemplate;
 
     @Autowired
-    UserDb userDb;
+    private UserDb userDb;
 
     @BeforeEach
-    public void resetDb() {
-        userDb.clear();
-    }
-
-    @Test
-    @DisplayName("the GET request should return all the games from the Db")
-    public void getAllGamesFromDbTest() {
-        //GIVEN
-        userDb.addUser(User.builder()
+    public void setup() {
+        userDb.deleteAll();
+        userDb.save(User.builder()
                 .id("1")
                 .userName("Sanne")
                 .playedGames(List.of(
@@ -58,9 +51,16 @@ class UserControllerTest {
                 )
                 .build()
         );
+    }
+
+
+    @Test
+    @DisplayName("the GET request should return all the games from the Db")
+    public void getAllGamesFromDbTest() {
+        //GIVEN
 
         //WHEN
-        ResponseEntity<Game[]> getResponse = restTemplate.getForEntity(
+        ResponseEntity<Game[]> getResponse = testRestTemplate.getForEntity(
                 "http://localhost:" + port + "/user/games", Game[].class);
         Game[] gameList = getResponse.getBody();
 

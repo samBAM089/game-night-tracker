@@ -1,8 +1,10 @@
 package de.sambam.gamenighttracker.controller;
 
+import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.Game;
 import de.sambam.gamenighttracker.model.GameSession;
 import de.sambam.gamenighttracker.model.Player;
+import de.sambam.gamenighttracker.model.User;
 import de.sambam.gamenighttracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

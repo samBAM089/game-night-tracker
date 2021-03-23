@@ -2,7 +2,6 @@ package de.sambam.gamenighttracker.service;
 
 import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.Game;
-import de.sambam.gamenighttracker.model.Player;
 import de.sambam.gamenighttracker.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private UserDb userDb;
+    private final UserDb userDb;
 
     @Autowired
     public UserService(UserDb userDb) {
@@ -21,7 +20,7 @@ public class UserService {
     }
 
     public Optional<List<Game>> listAllGames(String id) {
-        Optional<User> user = userDb.getUser(id);
+        Optional<User> user = userDb.findById(id);
         if (user.isPresent()) {
             return Optional.of(user.get().getPlayedGames());
         }
