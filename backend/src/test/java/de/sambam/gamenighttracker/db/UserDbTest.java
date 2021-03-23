@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,13 +17,8 @@ class UserDbTest {
     public void getLogInUserTest() {
         //GIVEN
         UserDb userDb = new UserDb();
-
-        //WHEN
-        User actual = userDb.getLogInUser();
-
-        //THEN
-        assertTrue(actual.equals(User.builder()
-                .id("001")
+        userDb.addUser((User.builder()
+                .id("1")
                 .userName("admin")
                 .password("boardgamegeek")
                 .playedGames(List.of(
@@ -32,6 +28,22 @@ class UserDbTest {
                                 .build()
                 ))
                 .build()));
+
+        //WHEN
+        Optional<User> actual = userDb.getUser("1");
+
+        //THEN
+        assertTrue(actual.equals(Optional.of(User.builder()
+                .id("1")
+                .userName("admin")
+                .password("boardgamegeek")
+                .playedGames(List.of(
+                        Game.builder()
+                                .releaseYear("2020")
+                                .name("CloudAge")
+                                .build()
+                ))
+                .build())));
     }
 }
 

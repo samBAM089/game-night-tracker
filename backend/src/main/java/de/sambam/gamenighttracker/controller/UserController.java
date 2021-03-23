@@ -5,7 +5,9 @@ import de.sambam.gamenighttracker.model.GameSession;
 import de.sambam.gamenighttracker.model.Player;
 import de.sambam.gamenighttracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,7 +24,8 @@ public class UserController {
 
     @GetMapping({"/games"})
     public List<Game> gameList() {
-        return userService.listAllGames();
+        return userService.listAllGames("1")
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
 }
