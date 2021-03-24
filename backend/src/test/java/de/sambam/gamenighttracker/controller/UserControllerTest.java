@@ -37,49 +37,45 @@ class UserControllerTest {
 
     @BeforeEach
     public void setup() {
-        Player player1 = Player.builder()
-                .name("Mario")
-                .color("red")
-                .score(123)
+        Player player1 = Player.builder().name("Mario").color("red").score(123)
                 .build();
-        Player player2 = Player.builder()
-                .name("Sanne")
-                .color("blue")
-                .score(122)
+        Player player2 = Player.builder().name("Sanne").color("blue").score(122)
                 .build();
-        Player player3 = Player.builder()
-                .name("samBAM")
-                .color("yellow")
-                .score(100)
+        Player player3 = Player.builder().name("samBAM").color("yellow").score(100)
+                .build();
+        Player player4 = Player.builder().name("Mario").color("red").score(90)
+                .build();
+        Player player5 = Player.builder().name("Sanne").color("blue").score(80)
+                .build();
+        Player player6 = Player.builder().name("samBAM").color("yellow").score(70)
                 .build();
         GameSession session1 = GameSession.builder()
-                .id("1")
-                .sessionState("DONE")
-                .winnerPlayerId("Mario")
+                .id("1").sessionState("DONE").winnerPlayerId("Mario")
                 .playerList(List.of(player1, player2))
                 .build();
         GameSession session2 = GameSession.builder()
-                .id("2")
-                .sessionState("DONE")
-                .winnerPlayerId("Sanne")
-                .playerList(List.of(player2, player3))
+                .id("2").sessionState("DONE").winnerPlayerId("samBAM")
+                .playerList(List.of(player3, player4))
+                .build();
+        GameSession session3 = GameSession.builder()
+                .id("3").sessionState("DONE").winnerPlayerId("Sanne")
+                .playerList(List.of(player5, player6))
                 .build();
         Game game1 = Game.builder()
-                .name("Bonfire")
-                .releaseYear("2020")
-                .gameSessionList(List.of(session1))
+                .name("Bonfire").releaseYear("2020").gameSessionList(List.of(session1))
                 .build();
         Game game2 = Game.builder()
-                .name("Calico")
-                .releaseYear("2020")
-                .gameSessionList(List.of(session2))
+                .name("Calico").releaseYear("2020").gameSessionList(List.of(session2))
+                .build();
+        Game game3 = Game.builder()
+                .name("Calico").releaseYear("2020").gameSessionList(List.of(session3))
                 .build();
 
         userDb.deleteAll();
         userDb.save(User.builder()
                 .id("1")
                 .userName("Sanne")
-                .playedGames(List.of(game1, game2))
+                .playedGames(List.of(game1, game2, game3))
                 .build()
         );
     }
@@ -89,20 +85,17 @@ class UserControllerTest {
     @DisplayName("the GET request should return all the games from the Db")
     public void getAllGamesFromDbTest() {
         //GIVEN
-        Player player1 = Player.builder()
-                .name("Mario")
-                .color("red")
-                .score(123)
+        Player player1 = Player.builder().name("Mario").color("red").score(123)
                 .build();
-        Player player2 = Player.builder()
-                .name("Sanne")
-                .color("blue")
-                .score(122)
+        Player player2 = Player.builder().name("Sanne").color("blue").score(122)
                 .build();
-        Player player3 = Player.builder()
-                .name("samBAM")
-                .color("yellow")
-                .score(100)
+        Player player3 = Player.builder().name("samBAM").color("yellow").score(100)
+                .build();
+        Player player4 = Player.builder().name("Mario").color("red").score(90)
+                .build();
+        Player player5 = Player.builder().name("Sanne").color("blue").score(80)
+                .build();
+        Player player6 = Player.builder().name("samBAM").color("yellow").score(70)
                 .build();
 
         //WHEN
@@ -112,7 +105,7 @@ class UserControllerTest {
 
         //THEN
         assertEquals(getResponse.getStatusCode(), HttpStatus.OK);
-        assertThat(gameList.length, is(2));
+        assertThat(gameList.length, is(3));
         assertThat(List.of(gameList), containsInAnyOrder(
                 Game.builder()
                         .name("Bonfire")
@@ -130,8 +123,18 @@ class UserControllerTest {
                         .gameSessionList(List.of(GameSession.builder()
                                 .id("2")
                                 .sessionState("DONE")
+                                .winnerPlayerId("samBAM")
+                                .playerList(List.of(player3, player4))
+                                .build()))
+                        .build(),
+                Game.builder()
+                        .name("Calico")
+                        .releaseYear("2020")
+                        .gameSessionList(List.of(GameSession.builder()
+                                .id("3")
+                                .sessionState("DONE")
                                 .winnerPlayerId("Sanne")
-                                .playerList(List.of(player2, player3))
+                                .playerList(List.of(player5, player6))
                                 .build()))
                         .build()));
     }
@@ -146,69 +149,38 @@ class UserControllerTest {
 
         //THEN
         assertEquals(getResponse.getStatusCode(), HttpStatus.OK);
-        assertThat(sessionList.length, is(2));
+        assertThat(sessionList.length, is(3));
         assertThat(List.of(sessionList), containsInAnyOrder(
                 GameSession.builder()
-                        .id("1")
-                        .sessionState("DONE")
-                        .winnerPlayerId("Mario")
+                        .id("1").sessionState("DONE").winnerPlayerId("Mario")
                         .playerList(List.of(
-                                Player.builder()
-                                        .name("Mario")
-                                        .color("red")
-                                        .score(123)
+                                Player.builder().name("Mario").color("red").score(123)
                                         .build(),
-                                Player.builder()
-                                        .name("Sanne")
-                                        .color("blue")
-                                        .score(122)
+                                Player.builder().name("Sanne").color("blue").score(122)
                                         .build()))
                         .build(),
                 GameSession.builder()
                         .id("2")
                         .sessionState("DONE")
+                        .winnerPlayerId("samBAM")
+                        .playerList(List.of(
+                                Player.builder().name("samBAM").color("yellow").score(100)
+                                        .build(),
+                                Player.builder().name("Mario").color("red").score(90)
+                                        .build()))
+                        .build(),
+                GameSession.builder()
+                        .id("3")
+                        .sessionState("DONE")
                         .winnerPlayerId("Sanne")
                         .playerList(List.of(
-                                Player.builder()
-                                        .name("Sanne")
-                                        .color("blue")
-                                        .score(122)
+                                Player.builder().name("Sanne").color("blue").score(80)
                                         .build(),
-                                Player.builder()
-                                        .name("samBAM")
-                                        .color("yellow")
-                                        .score(100)
+                                Player.builder().name("samBAM").color("yellow").score(70)
                                         .build()))
                         .build()));
+
     }
 
-    @Test
-    @DisplayName("GET request to /user/players should return all players w/o duplicates")
-    public void getPlayerListTest() {
-        //WHEN
-        ResponseEntity<Player[]> getResponse = testRestTemplate.getForEntity(
-                "http://localhost:" + port + "user/players", Player[].class);
-        Player[] playerList = getResponse.getBody();
 
-        //THEN
-        assertEquals(getResponse.getStatusCode(), HttpStatus.OK);
-
-        assertThat(playerList.length, is(3));
-        assertThat(List.of(playerList), containsInAnyOrder(
-                Player.builder()
-                        .name("Mario")
-                        .color("red")
-                        .score(123)
-                        .build(),
-                Player.builder()
-                        .name("Sanne")
-                        .color("blue")
-                        .score(122)
-                        .build(),
-                Player.builder()
-                        .name("samBAM")
-                        .color("yellow")
-                        .score(100)
-                        .build()));
-    }
 }
