@@ -35,13 +35,13 @@ class UserServiceTest {
         UserService userService = new UserService(userDb);
 
         //WHEN
-        Optional<List<Game>> listOptional = userService.listAllGames("1");
+        List<Game> list = userService.listAllGames("1");
 
         //THEN
-        assertTrue(listOptional.equals(Optional.of(List.of(
+        assertTrue(list.equals(List.of(
                 Game.builder()
                         .name("MauMau")
-                        .build()))));
+                        .build())));
 
     }
 
@@ -83,10 +83,10 @@ class UserServiceTest {
         UserService userService = new UserService(userDb);
 
         //WHEN
-        Optional<List<GameSession>> gameSessionList = userService.listAllSessions("1");
+        List<GameSession> gameSessionList = userService.listAllSessions("1");
 
         //THEN
-        assertTrue(gameSessionList.equals(Optional.of(List.of(
+        assertTrue(gameSessionList.equals(List.of(
                 GameSession.builder()
                         .id("1")
                         .sessionState("DONE")
@@ -102,6 +102,6 @@ class UserServiceTest {
                         .sessionState("DONE")
                         .winnerPlayerId("Hanno")
                         .build()
-        ))));
+        )));
     }
 }

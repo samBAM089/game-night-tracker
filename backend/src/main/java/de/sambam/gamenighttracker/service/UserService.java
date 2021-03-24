@@ -21,15 +21,15 @@ public class UserService {
         this.userDb = userDb;
     }
 
-    public Optional<List<Game>> listAllGames(String id) {
+    public List<Game> listAllGames(String id) {
         Optional<User> user = userDb.findById(id);
         if (user.isPresent()) {
-            return Optional.of(user.get().getPlayedGames());
+            return user.get().getPlayedGames();
         }
-        return Optional.empty();
+        return List.of();
     }
 
-    public Optional<List<GameSession>> listAllSessions(String id) {
+    public List<GameSession> listAllSessions(String id) {
         Optional<User> user = userDb.findById(id);
         if (user.isPresent()) {
             List<Game> gameList = user.get().getPlayedGames();
@@ -39,8 +39,8 @@ public class UserService {
                     sessionList.add(session);
                 }
             }
-            return Optional.of(sessionList);
+            return sessionList;
         }
-        return Optional.empty();
+        return List.of();
     }
 }
