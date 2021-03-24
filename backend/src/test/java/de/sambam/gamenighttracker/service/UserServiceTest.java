@@ -1,14 +1,12 @@
 package de.sambam.gamenighttracker.service;
 
 import de.sambam.gamenighttracker.db.UserDb;
-import de.sambam.gamenighttracker.model.Game;
-import de.sambam.gamenighttracker.model.GameSession;
-import de.sambam.gamenighttracker.model.Player;
-import de.sambam.gamenighttracker.model.User;
+import de.sambam.gamenighttracker.model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -116,12 +114,18 @@ class UserServiceTest {
         //GIVEN
         Player player1 = Player.builder()
                 .name("Sanne")
+                .score(100)
+                .color("red")
                 .build();
         Player player2 = Player.builder()
                 .name("Tim")
+                .score(200)
+                .color("blue")
                 .build();
         Player player3 = Player.builder()
                 .name("John")
+                .score(300)
+                .color("yellow")
                 .build();
         List<Player> playerList1 = new ArrayList<>(List.of(player1, player2));
         List<Player> playerList2 = new ArrayList<>(List.of(player2, player3));
@@ -157,9 +161,22 @@ class UserServiceTest {
         UserService userService = new UserService(userDb);
 
         //WHEN
-        List<Player> playerList = userService.listAllPlayers("1");
+        List<PlayerDto> actual = userService.listAllPlayers("1");
 
         //THEN
-        assertThat(playerList.size(), is(3));
+        assertTrue(actual.equals(List.of(
+                PlayerDto.builder()
+                        .name("Sanne")
+                        .color("red")
+                        .build(),
+                PlayerDto.builder()
+                        .name("Tim")
+                        .color("blue")
+                        .build(),
+                PlayerDto.builder()
+                        .name("John")
+                        .color("yellow")
+                        .build())
+        ));
     }
 }

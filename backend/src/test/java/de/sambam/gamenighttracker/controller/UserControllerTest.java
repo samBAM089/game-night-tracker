@@ -1,10 +1,7 @@
 package de.sambam.gamenighttracker.controller;
 
 import de.sambam.gamenighttracker.db.UserDb;
-import de.sambam.gamenighttracker.model.Game;
-import de.sambam.gamenighttracker.model.GameSession;
-import de.sambam.gamenighttracker.model.Player;
-import de.sambam.gamenighttracker.model.User;
+import de.sambam.gamenighttracker.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -182,5 +179,25 @@ class UserControllerTest {
 
     }
 
+    @Test
+    @DisplayName("getPlayerList() should return all players from Db w/o duplicates")
+    public void getPlayerListTest() {
+        //WHEN
+        ResponseEntity<PlayerDto[]> getResponse = testRestTemplate.getForEntity(
+                "http://localhost:" + port + "user/players", PlayerDto[].class);
+        PlayerDto[] playerDtoList = getResponse.getBody();
+
+        //THEN
+        assertTrue(getResponse.getStatusCode().equals(HttpStatus.OK));
+        assertThat(getResponse.getBody().length, is(3));
+        assertThat(List.of(playerDtoList), containsInAnyOrder(
+                PlayerDto.builder().name("Mario").color("red")
+                        .build(),
+                PlayerDto.builder().name("Sanne").color("blue")
+                        .build(),
+                PlayerDto.builder().name("samBAM").color("yellow")
+                        .build()
+        ));
+    }
 
 }
