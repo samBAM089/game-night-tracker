@@ -182,4 +182,33 @@ class UserControllerTest {
                         .build()));
     }
 
+    @Test
+    @DisplayName("GET request to /user/players should return all players w/o duplicates")
+    public void getPlayerListTest() {
+        //WHEN
+        ResponseEntity<Player[]> getResponse = testRestTemplate.getForEntity(
+                "http://localhost:" + port + "user/players", Player[].class);
+        Player[] playerList = getResponse.getBody();
+
+        //THEN
+        assertEquals(getResponse.getStatusCode(), HttpStatus.OK);
+
+        assertThat(playerList.length, is(3));
+        assertThat(List.of(playerList), containsInAnyOrder(
+                Player.builder()
+                        .name("Mario")
+                        .color("red")
+                        .score(123)
+                        .build(),
+                Player.builder()
+                        .name("Sanne")
+                        .color("blue")
+                        .score(122)
+                        .build(),
+                Player.builder()
+                        .name("samBAM")
+                        .color("yellow")
+                        .score(100)
+                        .build()));
+    }
 }

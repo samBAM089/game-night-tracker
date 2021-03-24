@@ -29,10 +29,14 @@ public class UserController {
         return userService.listAllGames("1");
     }
 
-    @GetMapping({"/gamesessions"})
+    @GetMapping("/gamesessions")
     public List<GameSession> getGameSessionsList() {
         return userService.listAllSessions("1");
     }
 
+    @GetMapping("/players")
+    public List<Player> getPlayerList() {
+        return userService.listAllPlayers("1");
+    }
 }
 
