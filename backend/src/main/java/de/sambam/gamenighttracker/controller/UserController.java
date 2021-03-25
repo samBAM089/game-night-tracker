@@ -27,14 +27,15 @@ public class UserController {
         return userService.listAllGames("1");
     }
 
-    @GetMapping("/gamesessions")
-    public List<GameSession> getGameSessionsList() {
-        return userService.listAllSessions("1");
-    }
-
     @GetMapping("/players")
     public List<PlayerDto> getPlayerList() {
-        return userService.listAllPlayers("1");
+        return userService.getAllPlayersList("1");
     }
+
+    @PostMapping("/game/{apiGameId}/gamesessions")
+    public Game addNewGameSession(@RequestBody Game newGame, String id, @RequestParam String apiGameId) {
+        return userService.addNewGameSession(newGame, "1", apiGameId);
+    }
+
 }
 
