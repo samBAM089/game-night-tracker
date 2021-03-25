@@ -32,9 +32,14 @@ public class UserController {
         return userService.getAllPlayersList("1");
     }
 
+    @PostMapping("/game")
+    public Game addNewGame(@RequestBody Game gameToAdd) {
+        return userService.addNewGame(gameToAdd, "1");
+    }
+
     @PostMapping("/game/{apiGameId}/gamesessions")
-    public Game addNewGameSession(@RequestBody Game newGame, String id, @RequestParam String apiGameId) {
-        return userService.addNewGameSession(newGame, "1", apiGameId);
+    public GameSession addNewGameSession(@RequestBody GameSession newSession, @PathVariable("apiGameId") String apiGameId) {
+        return userService.addNewGameSession(newSession, "1", apiGameId);
     }
 
 }
