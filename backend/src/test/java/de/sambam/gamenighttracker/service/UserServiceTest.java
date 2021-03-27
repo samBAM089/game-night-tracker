@@ -25,7 +25,7 @@ class UserServiceTest {
     @DisplayName("listAllGames() should return all games from Db")
     public void listAllGamesTest() {
         //GIVEN
-        when(userDb.findById("1")).thenReturn(Optional.of(User.builder()
+        when(userDb.findById(userId)).thenReturn(Optional.of(User.builder()
                 .id("1")
                 .userName("admin")
                 .playedGames(List.of(
@@ -42,7 +42,108 @@ class UserServiceTest {
                 Game.builder()
                         .name("MauMau")
                         .build())));
+    }
 
+    @Test
+    @DisplayName("no gameList in user with id 1, listAllPlayers should return en empty List")
+    public void userHasNoGameListReturnsEmptyListTest() {
+        //GIVEN
+        when(userDb.findById(userId)).thenReturn(Optional.of(User.builder()
+                .id("1")
+                .userName("admin")
+                .playedGames(List.of())
+                .build()));
+
+        //WHEN
+        List<PlayerDto> playerList = userService.listAllPlayers(userId);
+
+        //THEN
+        assertThat(playerList, is(List.of()));
+    }
+
+    @Test
+    @DisplayName("no game in user with id 1, listAllPlayers should return en empty List")
+    public void userHasNoGameReturnsEmptyListTest() {
+        //GIVEN
+        when(userDb.findById(userId)).thenReturn(Optional.of(User.builder()
+                .id("1")
+                .userName("admin")
+                .build()));
+
+        //WHEN
+        List<PlayerDto> playerList = userService.listAllPlayers(userId);
+
+        //THEN
+        assertThat(playerList, is(List.of()));
+    }
+
+    @Test
+    @DisplayName("no session in user with id 1, listAllPlayers should return en empty List")
+    public void userHasNoSessionReturnsEmptyListTest() {
+        //GIVEN
+        when(userDb.findById(userId)).thenReturn(Optional.of(User.builder()
+                .id("1")
+                .userName("admin")
+                .playedGames(List.of(
+                        Game.builder()
+                                .name("Yatzee")
+                                .releaseYear("1950")
+                                .gameSessionList(List.of())
+                                .build()
+                ))
+                .build()));
+
+        //WHEN
+        List<PlayerDto> playerList = userService.listAllPlayers(userId);
+
+        //THEN
+        assertThat(playerList, is(List.of()));
+    }
+
+    @Test
+    @DisplayName("no player in user with id 1, listAllPlayers should return en empty List")
+    public void userHasNoPlayerReturnsEmptyListTest() {
+        //GIVEN
+        when(userDb.findById(userId)).thenReturn(Optional.of(User.builder()
+                .id("1")
+                .userName("admin")
+                .playedGames(List.of(
+                        Game.builder()
+                                .name("Yatzee")
+                                .releaseYear("1950")
+                                .gameSessionList(List.of(
+                                        GameSession.builder()
+                                                .sessionState("PREP")
+                                                .playerList(List.of())
+                                                .build()
+                                ))
+                                .build()
+                ))
+                .build()));
+
+        //WHEN
+        List<PlayerDto> playerList = userService.listAllPlayers(userId);
+
+        //THEN
+        assertThat(playerList, is(List.of()));
+    }
+
+    @Test
+    @DisplayName("no gameList in user with id 1 addNewGame should return empty optional")
+    public void addNewGameWithNoGameListTest() {
+        //GIVEN
+        when(userDb.findById(userId)).thenReturn(Optional.of(
+                User.builder()
+                        .id("1")
+                        .userName("admin")
+                        .build()));
+
+        Game gameToAdd = Game.builder().name("Monopoly").build();
+        //WHEN
+        Optional<Game> newGame = userService.addNewGame(gameToAdd, userId);
+
+        //THEN
+        assertTrue(newGame.equals(Optional.empty()));
     }
 
     @Test
@@ -101,6 +202,24 @@ class UserServiceTest {
                         .winnerPlayerId("Hanno")
                         .build()
         )));
+    }
+
+    @Test
+    @DisplayName("No sessions in user with id 1, listAllSessions should return empty list")
+    public void listAllSessionsreturnsEmptyListTest() {
+        //GIVEN
+        when(userDb.findById(userId)).thenReturn(Optional.of(
+                User.builder()
+                        .id("1")
+                        .userName("admin")
+                        .build()));
+
+        //WHEN
+        List<GameSession> actual = userService.listAllSessions(userId);
+
+        //THEN
+        assertTrue(actual.equals(List.of()));
+
     }
 
     @Test
@@ -251,4 +370,27 @@ class UserServiceTest {
                 .duration(200)
                 .build()));
     }
+
+    @Test
+    @DisplayName("no gameList in user with id 1, addNewGameSession should return empty optional")
+    public void addNewGameSessionWithoutGameList() {
+        //GIVEN
+        when(userDb.findById(userId)).thenReturn(Optional.of(
+                User.builder()
+                        .id("1")
+                        .userName("admin")
+                        .build()));
+
+        //WHEN
+        GameSession sessionToAdd = GameSession.builder()
+                .sessionState("DONE")
+                .playerList(List.of())
+                .build();
+        String apiGameId = "123";
+        Optional<GameSession> newSession = userService.addNewGameSession(sessionToAdd, userId, apiGameId);
+
+        //THEN
+        assertTrue(newSession.equals(Optional.empty()));
+    }
+
 }
