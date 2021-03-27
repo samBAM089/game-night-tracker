@@ -42,7 +42,7 @@ public class UserService {
     }
 
 
-    public List<PlayerDto> getAllPlayersList(String id) {
+    public List<PlayerDto> listAllPlayers(String id) {
         List<Game> gameList = userDb.findById(id).get().getPlayedGames();
         Map<String, PlayerDto> playerMap = new HashMap<>();
         List<Player> playerList = gameList.stream()
@@ -55,12 +55,23 @@ public class UserService {
                     .color(player.getColor())
                     .build());
         }
-        // playerList.stream().map(player -> playerMap.put(player.getName(), player));
         return playerMap.values().stream().collect(Collectors.toList());
     }
 
+    public Optional<Game> addNewGame(Game newGame, String id) {
 
-    public GameSession addNewGameSession(GameSession newSession, String id, String apiGameId) {
+        Optional<User> user = userDb.findById(id);
+        if (user.isPresent()) {
+            List<Game> existingGames = user.get().getPlayedGames();
+            existingGames.add(newGame);
+            userDb.save(user.get());
+            return Optional.of(newGame);
+        }
+        return Optional.empty();
+
+    }
+
+    public Optional<GameSession> addNewGameSession(GameSession newSession, String id, String apiGameId) {
         Optional<User> user = userDb.findById(id);
 
         if (user.isPresent()) {
@@ -72,18 +83,10 @@ public class UserService {
                 match.get().getGameSessionList().add(newSession);
                 userDb.save(user.get());
             }
-            return newSession;
-        } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+            return Optional.of(newSession);
+        }
+        return Optional.empty();
     }
 
-    public Game addNewGame(Game newGame, String id) {
-
-        Optional<User> user = userDb.findById(id);
-        List<Game> existingGames = user.get().getPlayedGames();
-        existingGames.add(newGame);
-        userDb.save(user.get());
-        return newGame;
-
-    }
 
 }

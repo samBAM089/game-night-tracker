@@ -1,6 +1,5 @@
 package de.sambam.gamenighttracker.controller;
 
-import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.*;
 import de.sambam.gamenighttracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("user")
@@ -29,16 +28,16 @@ public class UserController {
 
     @GetMapping("/players")
     public List<PlayerDto> getPlayerList() {
-        return userService.getAllPlayersList("1");
+        return userService.listAllPlayers("1");
     }
 
     @PostMapping("/game")
-    public Game addNewGame(@RequestBody Game gameToAdd) {
+    public Optional<Game> addNewGame(@RequestBody Game gameToAdd) {
         return userService.addNewGame(gameToAdd, "1");
     }
 
     @PostMapping("/game/{apiGameId}/gamesessions")
-    public GameSession addNewGameSession(@RequestBody GameSession newSession, @PathVariable("apiGameId") String apiGameId) {
+    public Optional<GameSession> addNewGameSession(@RequestBody GameSession newSession, @PathVariable("apiGameId") String apiGameId) {
         return userService.addNewGameSession(newSession, "1", apiGameId);
     }
 
