@@ -35,27 +35,40 @@ public class UserService {
         Optional<User> user = userDb.findById(id);
         if (user.isPresent()) {
             List<Game> gameList = user.get().getPlayedGames();
-            return gameList.stream().flatMap(game -> game.getGameSessionList().stream())
-                    .collect(Collectors.toList());
+            if (gameList != null) {
+                return gameList.stream()
+                        .filter(game -> game != null)
+                        .flatMap(game -> game.getGameSessionList().stream())
+                        .collect(Collectors.toList());
+            }
         }
         return List.of();
     }
 
-
     public List<PlayerDto> listAllPlayers(String id) {
-        List<Game> gameList = userDb.findById(id).get().getPlayedGames();
-        Map<String, PlayerDto> playerMap = new HashMap<>();
-        List<Player> playerList = gameList.stream()
-                .flatMap(game -> game.getGameSessionList().stream())
-                .flatMap(session -> session.getPlayerList().stream())
-                .collect(Collectors.toList());
-        for (Player player : playerList) {
-            playerMap.put(player.getName(), PlayerDto.builder()
-                    .name(player.getName())
-                    .color(player.getColor())
-                    .build());
+        Optional<User> user = userDb.findById(id);
+        if (user.isPresent()) {
+            List<Game> gameList = userDb.findById(id).get().getPlayedGames();
+            Map<String, PlayerDto> playerMap = new HashMap<>();
+            if (gameList != null) {
+                List<Player> playerList = gameList.stream()
+                        .filter(game -> game != null)
+                        .flatMap(game -> game.getGameSessionList().stream())
+                        .filter(session -> session != null)
+                        .flatMap(session -> session.getPlayerList().stream())
+                        .collect(Collectors.toList());
+                for (Player player : playerList) {
+                    if (player != null) {
+                        playerMap.put(player.getName(), PlayerDto.builder()
+                                .name(player.getName())
+                                .color(player.getColor())
+                                .build());
+                    }
+                }
+                return playerMap.values().stream().collect(Collectors.toList());
+            }
         }
-        return playerMap.values().stream().collect(Collectors.toList());
+        return List.of();
     }
 
     public Optional<Game> addNewGame(Game newGame, String id) {
@@ -63,12 +76,13 @@ public class UserService {
         Optional<User> user = userDb.findById(id);
         if (user.isPresent()) {
             List<Game> existingGames = user.get().getPlayedGames();
-            existingGames.add(newGame);
-            userDb.save(user.get());
-            return Optional.of(newGame);
+            if (existingGames != null) {
+                existingGames.add(newGame);
+                userDb.save(user.get());
+                return Optional.of(newGame);
+            }
         }
         return Optional.empty();
-
     }
 
     public Optional<GameSession> addNewGameSession(GameSession newSession, String id, String apiGameId) {
@@ -76,17 +90,18 @@ public class UserService {
 
         if (user.isPresent()) {
             List<Game> gameList = user.get().getPlayedGames();
-            Optional<Game> match = gameList.stream()
-                    .filter(game -> game.getApiGameId().equals(apiGameId))
-                    .findFirst();
-            if (match.isPresent()) {
-                match.get().getGameSessionList().add(newSession);
-                userDb.save(user.get());
+            if (gameList != null) {
+                Optional<Game> match = gameList.stream()
+                        .filter(game -> game.getApiGameId().equals(apiGameId))
+                        .findFirst();
+                if (match.isPresent()) {
+                    match.get().getGameSessionList().add(newSession);
+                    userDb.save(user.get());
+                    return Optional.of(newSession);
+                }
             }
-            return Optional.of(newSession);
         }
         return Optional.empty();
     }
-
 
 }

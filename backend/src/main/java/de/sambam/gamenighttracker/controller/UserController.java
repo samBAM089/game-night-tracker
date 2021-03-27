@@ -33,13 +33,21 @@ public class UserController {
 
     @PostMapping("/game")
     public Optional<Game> addNewGame(@RequestBody Game gameToAdd) {
-        return userService.addNewGame(gameToAdd, "1");
+        try {
+            return userService.addNewGame(gameToAdd, "1");
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No gamelist was generated!");
+        }
     }
 
     @PostMapping("/game/{apiGameId}/gamesessions")
     public Optional<GameSession> addNewGameSession(@RequestBody GameSession newSession, @PathVariable("apiGameId") String apiGameId) {
-        return userService.addNewGameSession(newSession, "1", apiGameId);
+        try {
+            return userService.addNewGameSession(newSession, "1", apiGameId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No sessionList was generated!");
+        }
     }
-
 }
+
 
