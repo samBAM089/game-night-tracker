@@ -56,6 +56,7 @@ public class UserService {
                         .flatMap(game -> game.getGameSessionList().stream())
                         .filter(session -> session != null)
                         .flatMap(session -> session.getPlayerList().stream())
+                        .filter(player -> player != null)
                         .collect(Collectors.toList());
                 for (Player player : playerList) {
                     if (player != null) {
