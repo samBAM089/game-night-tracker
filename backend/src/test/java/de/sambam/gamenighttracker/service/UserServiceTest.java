@@ -11,7 +11,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 
@@ -189,6 +188,10 @@ class UserServiceTest {
 
         //THEN
         assertThat(actual.size(), is(2));
+        assertTrue(actual.contains(Game.builder()
+                .apiGameId("234")
+                .name("Monopoly")
+                .build()));
     }
 
 
