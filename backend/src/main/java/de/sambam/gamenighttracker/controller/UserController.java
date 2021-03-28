@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/game/{apiGameId}/gamesessions")
-    public Optional<GameSession> addNewGameSession(@RequestBody GameSession newSession, @PathVariable("apiGameId") String apiGameId) {
+    public Optional<GameSession> addNewGameSession(@RequestBody GameSession newSession, @PathVariable String apiGameId) {
         try {
             return userService.addNewGameSession(newSession, "1", apiGameId);
         } catch (Exception e) {
