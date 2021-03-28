@@ -4,9 +4,11 @@ import de.sambam.gamenighttracker.model.*;
 import de.sambam.gamenighttracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,18 +25,21 @@ public class UserController {
 
     @GetMapping("/games")
     public List<Game> getGameList() {
-        return userService.listAllGames("1");
+        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userService.listAllGames(loggedInUsername);
     }
 
     @GetMapping("/players")
     public List<PlayerDto> getPlayerList() {
-        return userService.listAllPlayers("1");
+        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userService.listAllPlayers(loggedInUsername);
     }
 
     @PostMapping("/game")
     public Optional<Game> addNewGame(@RequestBody Game gameToAdd) {
+        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
-            return userService.addNewGame(gameToAdd, "1");
+            return userService.addNewGame(gameToAdd, loggedInUsername);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No gamelist was generated!");
         }
@@ -42,12 +47,15 @@ public class UserController {
 
     @PostMapping("/game/{apiGameId}/gamesessions")
     public Optional<GameSession> addNewGameSession(@RequestBody GameSession newSession, @PathVariable String apiGameId) {
+        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
-            return userService.addNewGameSession(newSession, "1", apiGameId);
+            return userService.addNewGameSession(newSession, loggedInUsername, apiGameId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No sessionList was generated!");
         }
     }
+
+
 }
 
 

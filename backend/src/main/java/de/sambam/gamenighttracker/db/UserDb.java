@@ -10,4 +10,6 @@ public interface UserDb extends PagingAndSortingRepository<User, String> {
     
     @Override
     List<User> findAll();
+
+    Optional<User> findByUserName(String username);
 }
