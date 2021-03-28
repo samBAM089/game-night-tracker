@@ -44,6 +44,7 @@ class UserServiceTest {
                         .build())));
     }
 
+    
     @Test
     @DisplayName("no gameList in user with id 1, listAllPlayers should return en empty List")
     public void userHasNoGameListReturnsEmptyListTest() {
