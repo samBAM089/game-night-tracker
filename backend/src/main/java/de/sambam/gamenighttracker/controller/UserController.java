@@ -24,20 +24,20 @@ public class UserController {
     }
 
     @GetMapping("/games")
-    public List<Game> getGameList() {
-        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    public List<Game> getGameList(Principal principal) {
+        String loggedInUsername = principal.getName();
         return userService.listAllGames(loggedInUsername);
     }
 
     @GetMapping("/players")
-    public List<PlayerDto> getPlayerList() {
-        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    public List<PlayerDto> getPlayerList(Principal principal) {
+        String loggedInUsername = principal.getName();
         return userService.listAllPlayers(loggedInUsername);
     }
 
     @PostMapping("/game")
-    public Optional<Game> addNewGame(@RequestBody Game gameToAdd) {
-        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    public Optional<Game> addNewGame(@RequestBody Game gameToAdd, Principal principal) {
+        String loggedInUsername = principal.getName();
         try {
             return userService.addNewGame(gameToAdd, loggedInUsername);
         } catch (Exception e) {
@@ -46,8 +46,10 @@ public class UserController {
     }
 
     @PostMapping("/game/{apiGameId}/gamesessions")
-    public Optional<GameSession> addNewGameSession(@RequestBody GameSession newSession, @PathVariable String apiGameId) {
-        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    public Optional<GameSession> addNewGameSession(@RequestBody GameSession newSession,
+                                                   @PathVariable String apiGameId,
+                                                   Principal principal) {
+        String loggedInUsername = principal.getName();
         try {
             return userService.addNewGameSession(newSession, loggedInUsername, apiGameId);
         } catch (Exception e) {
