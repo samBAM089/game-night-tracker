@@ -2,6 +2,8 @@ package de.sambam.gamenighttracker.controller;
 
 import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.*;
+import de.sambam.gamenighttracker.security.AppUser;
+import de.sambam.gamenighttracker.security.AppUserDb;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,15 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +34,12 @@ class UserControllerTest {
 
     @Autowired
     private UserDb userDb;
+
+    @Autowired
+    private AppUserDb appUserDb;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void setup() {
@@ -71,21 +78,27 @@ class UserControllerTest {
                 .build();
 
         userDb.deleteAll();
-        userDb.save(User.builder()
-                .id("1")
-                .userName("Sanne")
-                .playedGames(List.of(game1, game2, game3))
-                .build()
-        );
+        appUserDb.deleteAll();
+        userDb.save((User.builder()
+                .userName("sanne")
+                .playedGames(Arrays.asList(game1, game2, game3))
+                .build()));
     }
 
 
     @Test
     @DisplayName("GET request to /user/games should return all the games from the Db")
     public void getGameListTest() {
+        //GIVEN
+
         //WHEN
-        ResponseEntity<Game[]> getResponse = testRestTemplate.getForEntity(
-                "http://localhost:" + port + "/user/games", Game[].class);
+        String jwtToken = logintoApp();
+        HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(jwtToken);
+        HttpEntity<Void> entity = new HttpEntity<>(header);
+
+        ResponseEntity<Game[]> getResponse = testRestTemplate.exchange(
+                "http://localhost:" + port + "/user/games", HttpMethod.GET, entity, Game[].class);
         Game[] gameList = getResponse.getBody();
 
         //THEN
@@ -147,8 +160,12 @@ class UserControllerTest {
     @DisplayName("GET request to /user/players should return all players from Db w/o duplicates")
     public void getPlayerListTest() {
         //WHEN
-        ResponseEntity<PlayerDto[]> getResponse = testRestTemplate.getForEntity(
-                "http://localhost:" + port + "user/players", PlayerDto[].class);
+        String jwtToken = logintoApp();
+        HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(jwtToken);
+        HttpEntity<Void> entity = new HttpEntity<>(header);
+        ResponseEntity<PlayerDto[]> getResponse = testRestTemplate.exchange(
+                "http://localhost:" + port + "/user/players", HttpMethod.GET, entity, PlayerDto[].class);
         PlayerDto[] playerDtoList = getResponse.getBody();
 
         //THEN
@@ -170,11 +187,14 @@ class UserControllerTest {
     public void addNewGameTest() {
         //GIVEN
         Game gameToAdd = Game.builder().name("Tabu").releaseYear("1990").build();
-        HttpEntity<Game> requestEntitiy = new HttpEntity<>(gameToAdd);
 
         //WHEN
+        String jwtToken = logintoApp();
+        HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(jwtToken);
+        HttpEntity<Game> entity = new HttpEntity<>(gameToAdd, header);
         ResponseEntity<Game> postResponse = testRestTemplate.exchange(
-                "http://localhost:" + port + "user/game", HttpMethod.POST, requestEntitiy, Game.class);
+                "http://localhost:" + port + "user/game", HttpMethod.POST, entity, Game.class);
 
         //THEN
         assertThat(postResponse.getStatusCode(), is(HttpStatus.OK));
@@ -189,12 +209,16 @@ class UserControllerTest {
         //GIVEN
         String apiGameId = "123";
         GameSession sessionToAdd = GameSession.builder().sessionState("DONE").winnerPlayerId("samBAM").build();
-        HttpEntity<GameSession> requestEntitiy = new HttpEntity<>(sessionToAdd);
+
 
         //WHEN
+        String jwtToken = logintoApp();
+        HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(jwtToken);
+        HttpEntity<GameSession> entity = new HttpEntity<>(sessionToAdd, header);
         ResponseEntity<GameSession> postResponse = testRestTemplate.exchange(
                 "http://localhost:" + port + "user/game/" + apiGameId + "/gamesessions",
-                HttpMethod.POST, requestEntitiy, GameSession.class);
+                HttpMethod.POST, entity, GameSession.class);
 
         //THEN
         assertThat(postResponse.getStatusCode(), is(HttpStatus.OK));
@@ -204,4 +228,13 @@ class UserControllerTest {
     }
 
 
+    private String logintoApp() {
+        String password = passwordEncoder.encode("superSecretPassword");
+        appUserDb.save(new AppUser("sanne", password));
+        ResponseEntity<String> loginResponse = testRestTemplate.postForEntity(
+                "http://localhost:" + port + "/auth/login",
+                new LoginDto("sanne", "superSecretPassword"),
+                String.class);
+        return loginResponse.getBody();
+    }
 }
