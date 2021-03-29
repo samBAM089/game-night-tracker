@@ -50,7 +50,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private Jws<Claims> parseToken(String authorizationHeader) {
-        String token = authorizationHeader.replace("Bearer", "").trim();
+        String token = authorizationHeader.replace("Bearer ", "").trim();
         Jws<Claims> parsedToken = Jwts.parser().setSigningKey(jwtConfig.getJwtSecret()).parseClaimsJws(token);
         return parsedToken;
     }
