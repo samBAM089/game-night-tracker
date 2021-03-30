@@ -15,13 +15,16 @@ import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.is;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTest {
@@ -76,12 +79,16 @@ class UserControllerTest {
         Game game3 = Game.builder()
                 .apiGameId("789").name("Calico").releaseYear("2020").gameSessionList(List.of(session3))
                 .build();
+        List<Game> gameList = new ArrayList<>();
+        gameList.add(game1);
+        gameList.add(game2);
+        gameList.add(game3);
 
         userDb.deleteAll();
         appUserDb.deleteAll();
         userDb.save((User.builder()
                 .userName("sanne")
-                .playedGames(Arrays.asList(game1, game2, game3))
+                .playedGames(gameList)
                 .build()));
     }
 
@@ -201,6 +208,15 @@ class UserControllerTest {
         assertEquals(postResponse.getBody(), Game.builder()
                 .name("Tabu").releaseYear("1990")
                 .build());
+        List<Game> playedGames = userDb.findByUserName("sanne").get().getPlayedGames();
+        assertThat(playedGames.get(3), is(Game.builder()
+                .name("Tabu").releaseYear("1990")
+                .build()));
+        assertThat(playedGames, hasItem(Game.builder()
+                .name("Tabu").releaseYear("1990")
+                .build()));
+
+
     }
 
     @Test
@@ -225,6 +241,17 @@ class UserControllerTest {
         assertEquals(postResponse.getBody(), GameSession.builder()
                 .sessionState("DONE").winnerPlayerId("samBAM")
                 .build());
+
+        Optional<Game> match = userDb.findByUserName("sanne").get().getPlayedGames().stream()
+                .filter(game -> game.getApiGameId().equals(apiGameId))
+                .findAny();
+
+        assertTrue(match.isPresent());
+        List<GameSession> sessionList = match.get().getGameSessionList();
+        assertThat(sessionList, hasItem(GameSession.builder()
+                .sessionState("DONE")
+                .winnerPlayerId("samBAM")
+                .build()));
     }
 
 
