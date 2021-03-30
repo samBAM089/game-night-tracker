@@ -1,20 +1,21 @@
 import styled from 'styled-components/macro'
 import ListBoard from './components/ListBoard'
-import ButtonTabBottom from './components/ButtonTabBottom'
+import ButtonTabBottom from "./components/ButtonTabBottom";
+
 
 export default function App() {
-  return (
-    <PageLayout>
-      <header>
-        <h1>GAME NIGHT TRACKER</h1>
-      </header>
-      <main>
-        <ListBoard />
-      </main>
-      <ButtonTabBottom />
-      <footer>powered by</footer>
-    </PageLayout>
-  )
+    return (
+        <PageLayout>
+            <header>
+                <h1>GAME NIGHT TRACKER</h1>
+            </header>
+            <main>
+                <ListBoard/>
+            </main>
+            <ButtonTabBottom/>
+            <footer> powered by</footer>
+        </PageLayout>
+    )
 }
 
 const PageLayout = styled.div`

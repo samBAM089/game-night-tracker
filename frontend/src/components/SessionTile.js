@@ -1,13 +1,13 @@
 import styled from 'styled-components/macro'
 
 export default function SessionTile() {
-  return (
-    <Wrapper>
-      <li>IMAGE</li>
-      <li>GAME NAME</li>
-      <li>DATE</li>
-    </Wrapper>
-  )
+    return (
+        <Wrapper>
+            <li>IMAGE</li>
+            <li>GAME NAME</li>
+            <li>DATE</li>
+        </Wrapper>
+    )
 }
 
 const Wrapper = styled.ul`

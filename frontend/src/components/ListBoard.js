@@ -1,36 +1,36 @@
 import styled from 'styled-components/macro'
 import SessionTile from './SessionTile'
-import ButtonTabBottom from './ButtonTabBottom'
+
 
 export default function ListBoard() {
-  return (
-    <Wrapper className="box">
-      <li>
-        <SessionTile />
-      </li>
-      <li>
-        <SessionTile />
-      </li>
-      <li>
-        <SessionTile />
-      </li>
-      <li>
-        <SessionTile />
-      </li>
-      <li>
-        <SessionTile />
-      </li>
-      <li>
-        <SessionTile />
-      </li>
-      <li>
-        <SessionTile />
-      </li>
-      <li>
-        <SessionTile />
-      </li>
-    </Wrapper>
-  )
+    return (
+        <Wrapper className="box">
+            <li>
+                <SessionTile/>
+            </li>
+            <li>
+                <SessionTile/>
+            </li>
+            <li>
+                <SessionTile/>
+            </li>
+            <li>
+                <SessionTile/>
+            </li>
+            <li>
+                <SessionTile/>
+            </li>
+            <li>
+                <SessionTile/>
+            </li>
+            <li>
+                <SessionTile/>
+            </li>
+            <li>
+                <SessionTile/>
+            </li>
+        </Wrapper>
+    )
 }
 
 const Wrapper = styled.ul`

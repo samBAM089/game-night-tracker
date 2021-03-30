@@ -1,8 +1,7 @@
 import styled from 'styled-components/macro'
-import ButtonTabBottom from './ButtonTabBottom'
 
 export default function ButtonBig() {
-  return <Button> new session </Button>
+    return <Button> new session </Button>
 }
 
 const Button = styled.button`
