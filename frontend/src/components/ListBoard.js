@@ -3,7 +3,7 @@ import SessionTile from './SessionTile';
 
 export default function ListBoard() {
     return (
-        <Wrapper className="box">
+        <Wrapper>
             <li>
                 <SessionTile />
             </li>
@@ -32,12 +32,12 @@ export default function ListBoard() {
     );
 }
 
-const Wrapper = styled.ul`
+const Wrapper = styled.section`
     height: 100%;
-    background: darkgrey;
+    background: none;
+    overflow-y: scroll;
     list-style: none;
     display: grid;
-    padding: 0;
+    padding: 5px;
     margin: 10px 0;
-    overflow-y: scroll;
 `;

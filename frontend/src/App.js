@@ -1,18 +1,18 @@
 import styled from 'styled-components/macro';
 import ListBoard from './components/ListBoard';
 import ButtonTabBottom from './components/ButtonTabBottom';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 export default function App() {
     return (
         <PageLayout>
-            <header>
-                <h1>GAME NIGHT TRACKER</h1>
-            </header>
+            <Header />
             <main>
                 <ListBoard />
             </main>
             <ButtonTabBottom />
-            <footer> powered by</footer>
+            <Footer />
         </PageLayout>
     );
 }
@@ -20,12 +20,10 @@ export default function App() {
 const PageLayout = styled.div`
     height: 100vh;
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto 1fr auto auto;
 
-    header {
-        background: darkslateblue;
-        padding: 0 16px;
-        text-align: center;
+    Header {
+        overflow-x: hidden;
     }
 
     main {
@@ -34,9 +32,10 @@ const PageLayout = styled.div`
         overflow-y: hidden;
     }
 
-    footer {
+    Footer {
         background: darkslateblue;
         text-align: center;
-        padding: 5px;
+        padding: 0;
+        margin: 0;
     }
 `;

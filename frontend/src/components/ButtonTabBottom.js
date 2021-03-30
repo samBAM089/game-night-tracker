@@ -11,5 +11,7 @@ export default function ButtonTabBottom() {
 
 const Wrapper = styled.section`
     background: darkslateblue;
+    border-top: 1px solid rgba(103, 103, 184, 0.53);
     text-align: center;
+    padding-top: 10px;
 `;

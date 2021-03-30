@@ -5,7 +5,10 @@ export default function ButtonBig() {
 }
 
 const Button = styled.button`
-    border-radius: 10px;
-    padding: 5px 50px;
+    border-radius: 50px;
+    padding: 10px 50px;
     margin: 8px;
+    background: #c8a1a2;
+    color: white;
+    border: none;
 `;
