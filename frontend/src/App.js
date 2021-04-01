@@ -1,41 +1,29 @@
-import styled from 'styled-components/macro';
-import ListBoard from './components/ListBoard';
 import ButtonTabBottom from './components/ButtonTabBottom';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import PageLayout from './components/PageLayout';
+import StartSession from './pages/StartSession';
+import Login from './pages/Login';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Overview from './pages/Overview';
 
 export default function App() {
+    const [jwtToken, setJwtToken] = useState();
+
     return (
-        <PageLayout>
-            <Header />
-            <main>
-                <ListBoard />
-            </main>
-            <ButtonTabBottom />
-            <Footer />
-        </PageLayout>
+        <Router>
+            <Switch>
+                <Route exact path="/">
+                    <Overview jwtToken={jwtToken} />
+                </Route>
+                <Route exact path="/login">
+                    <Login setJwtToken={setJwtToken} jwtToken={jwtToken} />
+                </Route>
+                <Route path="/newsession">
+                    <StartSession />
+                </Route>
+            </Switch>
+        </Router>
     );
 }
-
-const PageLayout = styled.div`
-    height: 100vh;
-    display: grid;
-    grid-template-rows: auto 1fr auto auto;
-
-    Header {
-        overflow-x: hidden;
-    }
-
-    main {
-        background: darkslateblue;
-        padding: 0 16px;
-        overflow-y: hidden;
-    }
-
-    Footer {
-        background: darkslateblue;
-        text-align: center;
-        padding: 0;
-        margin: 0;
-    }
-`;

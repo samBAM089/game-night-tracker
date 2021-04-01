@@ -4,7 +4,12 @@ export default function Footer() {
     return (
         <Wrapper>
             <h5>powered by</h5>
-            <img src="./images/bf-logo.png" alt="logo" />
+            <a
+                href="https://www.instagram.com/brettspielfieber/?hl=de}"
+                target="blank"
+            >
+                <img src="./images/bf-logo.png" alt=" logo" />
+            </a>
         </Wrapper>
     );
 }
@@ -12,9 +17,10 @@ export default function Footer() {
 const Wrapper = styled.section`
     display: grid;
     grid-template-columns: auto auto;
-    background: darkslateblue;
+    background: var(--primary);
     margin: 0;
     padding: 0;
+    border: none;
 
     img {
         width: 20px;

@@ -11,7 +11,7 @@ export default function Header() {
 }
 
 const Wrapper = styled.header`
-    background: darkslateblue;
+    background: var(--primary);
     padding: 10px 16px;
     text-align: center;
     border-bottom: 1px solid rgba(103, 103, 184, 0.53);

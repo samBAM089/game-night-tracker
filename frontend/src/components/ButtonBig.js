@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
 
 export default function ButtonBig() {
-    return <Button> new session </Button>;
+    return <Button> LET'S PLAY </Button>;
 }
 
 const Button = styled.button`
