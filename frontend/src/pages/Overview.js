@@ -1,9 +1,6 @@
 import SessionBoard from '../components/SessionBoard';
-import { useEffect, useState } from 'react';
-import * as gameNightTrackerApi from '../services/gameNightTrackerApi';
 import PageLayout from '../components/PageLayout';
 import Header from '../components/Header';
-import { Switch } from 'react-router-dom';
 import Footer from '../components/Footer';
 import ButtonTabBottom from '../components/ButtonTabBottom';
 import { Redirect } from 'react-router-dom';

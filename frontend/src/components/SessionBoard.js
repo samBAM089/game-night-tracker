@@ -1,6 +1,5 @@
 import styled from 'styled-components/macro';
 import SessionTile from './SessionTile';
-import ButtonTabBottom from './ButtonTabBottom';
 
 export default function SessionBoard({ sessions }) {
     return (

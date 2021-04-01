@@ -1,7 +1,3 @@
-import ButtonTabBottom from './components/ButtonTabBottom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import PageLayout from './components/PageLayout';
 import StartSession from './pages/StartSession';
 import Login from './pages/Login';
 import { useState, useEffect } from 'react';
