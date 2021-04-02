@@ -3,14 +3,13 @@ package de.sambam.gamenighttracker.service;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.*;
+import org.hamcrest.collection.IsMapContaining;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
+import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -187,26 +186,24 @@ class UserServiceTest {
                 .build()));
 
         //WHEN
-        List<GameSession> gameSessionList = userService.listAllSessions(username);
+        Map<String, Game> sessionGameMap = userService.listAllSessions(username);
 
         //THEN
-        assertTrue(gameSessionList.equals(List.of(
-                GameSession.builder()
-                        .id("1")
-                        .sessionState("DONE")
-                        .winnerPlayerId("Sanne")
-                        .build(),
-                GameSession.builder()
-                        .id("2")
-                        .sessionState("DONE")
-                        .winnerPlayerId("Mario")
-                        .build(),
-                GameSession.builder()
-                        .id("3")
-                        .sessionState("DONE")
-                        .winnerPlayerId("Hanno")
-                        .build()
-        )));
+        assertThat(sessionGameMap.size(), is(3));
+        assertThat(sessionGameMap, hasEntry("1", Game.builder()
+                .name("MauMau")
+                .gameSessionList(List.of(
+                        GameSession.builder()
+                                .id("1")
+                                .sessionState("DONE")
+                                .winnerPlayerId("Sanne")
+                                .build(),
+                        GameSession.builder()
+                                .id("2")
+                                .sessionState("DONE")
+                                .winnerPlayerId("Mario")
+                                .build())
+                )));
     }
 
     @Test
@@ -220,10 +217,10 @@ class UserServiceTest {
                         .build()));
 
         //WHEN
-        List<GameSession> actual = userService.listAllSessions(username);
+        Map<String, Game> actual = userService.listAllSessions(username);
 
         //THEN
-        assertTrue(actual.equals(List.of()));
+        assertTrue(actual.equals(Map.of()));
 
     }
 

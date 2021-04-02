@@ -4,6 +4,7 @@ import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.*;
 import de.sambam.gamenighttracker.service.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Immutable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -34,19 +35,25 @@ public class UserService {
         return List.of();
     }
 
-    public List<GameSession> listAllSessions(String username) {
+    public Map<String, Game> listAllSessions(String username) {
         Optional<User> user = userDb.findByUserName(username);
+        HashMap<String, Game> sessionGameMap = new HashMap<>();
         if (user.isEmpty()) {
-            return List.of();
+            return Map.of();
         }
         List<Game> gameList = user.get().getPlayedGames();
         if (gameList == null) {
-            return List.of();
+            return Map.of();
         }
-        return gameList.stream().filter(game -> game != null)
-                .flatMap(game -> game.getGameSessionList().stream())
-                .filter(session -> session != null)
-                .collect(Collectors.toList());
+        for (Game game : gameList) {
+            if (game.getGameSessionList() != null) {
+                for (GameSession session : game.getGameSessionList()) {
+                    sessionGameMap.put(session.getId(), game);
+                }
+
+            }
+        }
+        return sessionGameMap;
     }
 
 

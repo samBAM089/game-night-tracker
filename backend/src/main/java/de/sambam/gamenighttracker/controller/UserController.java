@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -21,6 +22,13 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/sessions")
+    public Map<String, Game> sessionGameMap(Principal principal) {
+        String loggedInUsername = principal.getName();
+        return userService.listAllSessions(loggedInUsername);
+
     }
 
     @GetMapping("/games")
