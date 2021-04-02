@@ -199,6 +199,7 @@ class UserControllerTest {
     public void addNewGameTest() {
         //GIVEN
         Game gameToAdd = Game.builder().name("Tabu").releaseYear("1990").build();
+        when(uuidGenerator.generateUuiD()).thenReturn("888");
 
         //WHEN
         String jwtToken = logintoApp();
@@ -211,13 +212,16 @@ class UserControllerTest {
         //THEN
         assertThat(postResponse.getStatusCode(), is(HttpStatus.OK));
         assertEquals(postResponse.getBody(), Game.builder()
+                .id("888")
                 .name("Tabu").releaseYear("1990")
                 .build());
         List<Game> playedGames = userDb.findByUserName("sanne").get().getPlayedGames();
         assertThat(playedGames.get(3), is(Game.builder()
+                .id("888")
                 .name("Tabu").releaseYear("1990")
                 .build()));
         assertThat(playedGames, hasItem(Game.builder()
+                .id("888")
                 .name("Tabu").releaseYear("1990")
                 .build()));
 

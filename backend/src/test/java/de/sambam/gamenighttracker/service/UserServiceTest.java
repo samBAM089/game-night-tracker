@@ -306,6 +306,8 @@ class UserServiceTest {
                 .name("Monopoly")
                 .build();
 
+        when(uuidGenerator.generateUuiD()).thenReturn("777");
+
         //WHEN
         userService.addNewGame(gameToAdd, username);
         List<Game> actual = userDb.findByUserName(username).get().getPlayedGames();
@@ -313,6 +315,7 @@ class UserServiceTest {
         //THEN
         assertThat(actual.size(), is(2));
         assertTrue(actual.contains(Game.builder()
+                .id("777")
                 .apiGameId("234")
                 .name("Monopoly")
                 .build()));

@@ -105,15 +105,19 @@ public class UserService {
 
         Optional<User> user = userDb.findByUserName(username);
 
-        if (user.isPresent()) {
-            List<Game> existingGames = user.get().getPlayedGames();
-            if (existingGames != null) {
-                existingGames.add(newGame);
-                userDb.save(user.get());
-                return Optional.of(newGame);
-            }
+        if (user.isEmpty()) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        List<Game> existingGames = user.get().getPlayedGames();
+        if (existingGames == null) {
+            return Optional.empty();
+        }
+        if (newGame.getId() == null) {
+            newGame.setId(uuidGenerator.generateUuiD());
+        }
+        existingGames.add(newGame);
+        userDb.save(user.get());
+        return Optional.of(newGame);
     }
 
     public Optional<GameSession> addNewGameSession(GameSession newSession, String username, String
