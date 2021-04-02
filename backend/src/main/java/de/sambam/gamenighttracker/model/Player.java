@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Player {
-    private String id;
     private String name;
     private String color;
     private int score;
