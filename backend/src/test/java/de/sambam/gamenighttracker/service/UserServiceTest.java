@@ -1,5 +1,6 @@
 package de.sambam.gamenighttracker.service;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.*;
 import org.junit.jupiter.api.DisplayName;
@@ -8,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -18,7 +21,8 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
 
     private final UserDb userDb = mock(UserDb.class);
-    private final UserService userService = new UserService(userDb);
+    private final UuidGenerator uuidGenerator = mock(UuidGenerator.class);
+    private final UserService userService = new UserService(userDb, uuidGenerator);
     private final String username = "sambam";
 
     @Test
@@ -333,7 +337,7 @@ class UserServiceTest {
         List<GameSession> sessionList2 = new ArrayList<>();
         sessionList2.add(session3);
 
-
+        when(uuidGenerator.generateUuiD()).thenReturn("089");
         when(userDb.findByUserName(username)).thenReturn(Optional.of(User.builder()
                 .id("1")
                 .userName("sambam")
@@ -367,6 +371,7 @@ class UserServiceTest {
         //THEN
         assertThat(sessionListOfMauMau.size(), is(3));
         assertTrue(sessionListOfMauMau.contains(GameSession.builder()
+                .id("089")
                 .playerList(playerList2)
                 .duration(200)
                 .build()));

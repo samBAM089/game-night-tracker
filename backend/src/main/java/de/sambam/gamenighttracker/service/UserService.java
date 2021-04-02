@@ -2,6 +2,7 @@ package de.sambam.gamenighttracker.service;
 
 import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.*;
+import de.sambam.gamenighttracker.service.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,12 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserDb userDb;
+    private final UuidGenerator uuidGenerator;
 
     @Autowired
-    public UserService(UserDb userDb) {
+    public UserService(UserDb userDb, UuidGenerator uuidGenerator) {
         this.userDb = userDb;
+        this.uuidGenerator = uuidGenerator;
     }
 
     public List<Game> listAllGames(String username) {
@@ -117,21 +120,25 @@ public class UserService {
             apiGameId) {
         Optional<User> user = userDb.findByUserName(username);
 
-        if (user.isPresent()) {
-            List<Game> gameList = user.get().getPlayedGames();
-            if (gameList != null) {
-                Optional<Game> match = gameList.stream()
-                        .filter(game -> game.getApiGameId().equals(apiGameId))
-                        .findFirst();
-                if (match.isPresent()) {
-
-                    List<GameSession> sessionList = match.get().getGameSessionList();
-                    if (sessionList != null) {
-                        sessionList.add(newSession);
-                        userDb.save(user.get());
-                        return Optional.of(newSession);
-                    }
+        if (user.isEmpty()) {
+            return Optional.empty();
+        }
+        List<Game> gameList = user.get().getPlayedGames();
+        if (gameList != null) {
+            Optional<Game> match = gameList.stream()
+                    .filter(game -> game.getApiGameId().equals(apiGameId))
+                    .findFirst();
+            if (match.isPresent()) {
+                List<GameSession> sessionList = match.get().getGameSessionList();
+                if (sessionList == null) {
+                    return Optional.empty();
                 }
+                if (newSession.getId() == null) {
+                    newSession.setId(uuidGenerator.generateUuiD());
+                }
+                sessionList.add(newSession);
+                userDb.save(user.get());
+                return Optional.of(newSession);
             }
         }
         return Optional.empty();
