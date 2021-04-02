@@ -13,7 +13,6 @@ export default function SessionTile({ session }) {
                     <h2>{session.gameName}</h2>
                 </span>
                 <br />
-
                 <span>Winner: {session.winner}</span>
             </div>
         </Wrapper>
