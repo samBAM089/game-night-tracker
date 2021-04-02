@@ -4,11 +4,13 @@ import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.*;
 import de.sambam.gamenighttracker.security.AppUser;
 import de.sambam.gamenighttracker.security.AppUserDb;
+import de.sambam.gamenighttracker.service.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTest {
@@ -40,6 +42,9 @@ class UserControllerTest {
 
     @Autowired
     private AppUserDb appUserDb;
+
+    @MockBean
+    private UuidGenerator uuidGenerator;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -226,6 +231,7 @@ class UserControllerTest {
         String apiGameId = "123";
         GameSession sessionToAdd = GameSession.builder().sessionState("DONE").winnerPlayerId("samBAM").build();
 
+        when(uuidGenerator.generateUuiD()).thenReturn("089");
 
         //WHEN
         String jwtToken = logintoApp();
@@ -236,9 +242,11 @@ class UserControllerTest {
                 "http://localhost:" + port + "user/game/" + apiGameId + "/gamesessions",
                 HttpMethod.POST, entity, GameSession.class);
 
+
         //THEN
         assertThat(postResponse.getStatusCode(), is(HttpStatus.OK));
         assertEquals(postResponse.getBody(), GameSession.builder()
+                .id("089")
                 .sessionState("DONE").winnerPlayerId("samBAM")
                 .build());
 
@@ -249,6 +257,7 @@ class UserControllerTest {
         assertTrue(match.isPresent());
         List<GameSession> sessionList = match.get().getGameSessionList();
         assertThat(sessionList, hasItem(GameSession.builder()
+                .id("089")
                 .sessionState("DONE")
                 .winnerPlayerId("samBAM")
                 .build()));
