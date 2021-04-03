@@ -1,4 +1,5 @@
 import styled from 'styled-components/macro';
+import { AiFillStar, Gi3DStairs } from 'react-icons/all';
 
 export default function SessionTile({ session }) {
     return (
@@ -13,7 +14,9 @@ export default function SessionTile({ session }) {
                     <h2>{session.gameName}</h2>
                 </span>
                 <br />
-                <span>Winner: {session.winnerPlayerId}</span>
+                <span>
+                    <AiFillStar /> Winner: {session.winnerPlayerId}
+                </span>
             </div>
         </Wrapper>
     );
@@ -45,5 +48,9 @@ const Wrapper = styled.section`
     h2 {
         padding: 0;
         margin: 0;
+    }
+
+    button {
+        font-size: 0.8em;
     }
 `;

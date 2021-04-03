@@ -17,12 +17,11 @@ export default function SessionBoard({ sessions }) {
 
 const Wrapper = styled.ul`
     display: grid;
-    justify-content: center;
+    justify-content: space-around;
     height: 100%;
     background: none;
     overflow-y: scroll;
     list-style: none;
-    display: grid;
     padding: 5px;
     margin: 10px 0;
 `;
