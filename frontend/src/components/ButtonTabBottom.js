@@ -4,7 +4,7 @@ import ButtonBig from './ButtonBig';
 export default function ButtonTabBottom() {
     return (
         <Wrapper>
-            <ButtonBig />
+            <ButtonBig>LET'S PLAY</ButtonBig>
         </Wrapper>
     );
 }
