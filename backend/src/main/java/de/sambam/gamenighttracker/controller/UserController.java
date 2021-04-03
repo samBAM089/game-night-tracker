@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("/sessions")
-    public Map<String, Game> sessionGameMap(Principal principal) {
+    public List<GameSessionDto> getAllGamesSessions(Principal principal) {
         String loggedInUsername = principal.getName();
         return userService.listAllSessions(loggedInUsername);
 

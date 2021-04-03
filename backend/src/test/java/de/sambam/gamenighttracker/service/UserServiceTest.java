@@ -9,11 +9,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 
 
@@ -151,7 +150,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("listAllSessions() should return all game sessions")
+    @DisplayName("listAllSessions() should return all game sessions sorted by the latest date")
     public void listAllSessionsTest() {
         //GIVEN
         when(userDb.findByUserName(username)).thenReturn(Optional.of(User.builder()
@@ -163,11 +162,13 @@ class UserServiceTest {
                                 .gameSessionList(List.of(
                                         GameSession.builder()
                                                 .id("1")
+                                                .startDateTimeStamp("2020-01-01-12:00")
                                                 .sessionState("DONE")
                                                 .winnerPlayerId("Sanne")
                                                 .build(),
                                         GameSession.builder()
                                                 .id("2")
+                                                .startDateTimeStamp("2020-01-02-12:00")
                                                 .sessionState("DONE")
                                                 .winnerPlayerId("Mario")
                                                 .build()
@@ -178,6 +179,7 @@ class UserServiceTest {
                                 .gameSessionList(List.of(
                                         GameSession.builder()
                                                 .id("3")
+                                                .startDateTimeStamp("2020-01-03-12:00")
                                                 .sessionState("DONE")
                                                 .winnerPlayerId("Hanno")
                                                 .build()
@@ -186,24 +188,30 @@ class UserServiceTest {
                 .build()));
 
         //WHEN
-        Map<String, Game> sessionGameMap = userService.listAllSessions(username);
+        List<GameSessionDto> sessionList = userService.listAllSessions(username);
 
         //THEN
-        assertThat(sessionGameMap.size(), is(3));
-        assertThat(sessionGameMap, hasEntry("1", Game.builder()
-                .name("MauMau")
-                .gameSessionList(List.of(
-                        GameSession.builder()
-                                .id("1")
-                                .sessionState("DONE")
-                                .winnerPlayerId("Sanne")
-                                .build(),
-                        GameSession.builder()
-                                .id("2")
-                                .sessionState("DONE")
-                                .winnerPlayerId("Mario")
-                                .build())
-                )));
+        assertThat(sessionList.size(), is(3));
+        assertTrue(sessionList.equals(List.of(
+                GameSessionDto.builder()
+                        .id("3")
+                        .gameName("Monopoly")
+                        .startDateTimestamp("2020-01-03-12:00")
+                        .winnerPlayerId("Hanno")
+                        .build(),
+                GameSessionDto.builder()
+                        .id("2")
+                        .gameName("MauMau")
+                        .startDateTimestamp("2020-01-02-12:00")
+                        .winnerPlayerId("Mario")
+                        .build(),
+                GameSessionDto.builder()
+                        .id("1")
+                        .gameName("MauMau")
+                        .startDateTimestamp("2020-01-01-12:00")
+                        .winnerPlayerId("Sanne")
+                        .build()
+        )));
     }
 
     @Test
@@ -217,10 +225,10 @@ class UserServiceTest {
                         .build()));
 
         //WHEN
-        Map<String, Game> actual = userService.listAllSessions(username);
+        List<GameSessionDto> actual = userService.listAllSessions(username);
 
         //THEN
-        assertTrue(actual.equals(Map.of()));
+        assertTrue(actual.equals(List.of()));
 
     }
 

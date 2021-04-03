@@ -15,6 +15,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+
 @Service
 public class UserService {
 
@@ -35,25 +36,35 @@ public class UserService {
         return List.of();
     }
 
-    public Map<String, Game> listAllSessions(String username) {
+    public List<GameSessionDto> listAllSessions(String username) {
         Optional<User> user = userDb.findByUserName(username);
-        HashMap<String, Game> sessionGameMap = new HashMap<>();
+        List<GameSessionDto> sessionList = new ArrayList<>();
         if (user.isEmpty()) {
-            return Map.of();
+            return List.of();
         }
         List<Game> gameList = user.get().getPlayedGames();
         if (gameList == null) {
-            return Map.of();
+            return List.of();
         }
+
         for (Game game : gameList) {
             if (game.getGameSessionList() != null) {
                 for (GameSession session : game.getGameSessionList()) {
-                    sessionGameMap.put(session.getId(), game);
+                    GameSessionDto sessionDto;
+                    sessionDto = new GameSessionDto(
+                            session.getId(),
+                            game.getName(),
+                            game.getThumbnailUrl(),
+                            session.getStartDateTimeStamp(),
+                            session.getDuration(),
+                            session.getPlayerList(),
+                            session.getWinnerPlayerId());
+                    sessionList.add(sessionDto);
                 }
-
             }
         }
-        return sessionGameMap;
+        Collections.sort(sessionList, Collections.reverseOrder());
+        return sessionList;
     }
 
 
