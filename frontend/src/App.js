@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import StartSession from './pages/StartSession';
+import Login from './pages/Login';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Overview from './pages/Overview';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+    const [jwtToken, setJwtToken] = useState();
+
+    return (
+        <Router>
+            <Switch>
+                <Route exact path="/">
+                    <Overview jwtToken={jwtToken} />
+                </Route>
+                <Route exact path="/login">
+                    <Login setJwtToken={setJwtToken} jwtToken={jwtToken} />
+                </Route>
+                <Route path="/newsession">
+                    <StartSession />
+                </Route>
+            </Switch>
+        </Router>
+    );
 }
-
-export default App;
