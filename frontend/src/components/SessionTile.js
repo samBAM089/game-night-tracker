@@ -4,16 +4,16 @@ export default function SessionTile({ session }) {
     return (
         <Wrapper>
             <span>
-                <img src={session.thumbnail} alt="" />
+                <img src={session.imageUrl} alt="" />
             </span>
             <div>
-                <span>{session.startDate}</span>
+                <span>{session.startDateTimestamp.substring(0, 11)}</span>
                 <br />
                 <span>
                     <h2>{session.gameName}</h2>
                 </span>
                 <br />
-                <span>Winner: {session.winner}</span>
+                <span>Winner: {session.winnerPlayerId}</span>
             </div>
         </Wrapper>
     );

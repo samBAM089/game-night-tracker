@@ -29,8 +29,8 @@ export default function Login({ setJwtToken, jwtToken }) {
             <main>
                 <Wrapper>
                     <Image src="./images/gnt_logo.png" alt="appLogo" />
-                    {!error && <p>GAME TIME!</p>}
-                    {error && <p>Please try again</p>}
+                    {!error && <p>IT'S GAME TIME!</p>}
+                    {error && <p>Please try again!</p>}
 
                     <Form onSubmit={handleSubmit}>
                         <input

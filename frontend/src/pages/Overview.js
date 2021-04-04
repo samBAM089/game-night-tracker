@@ -4,9 +4,11 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ButtonTabBottom from '../components/ButtonTabBottom';
 import { Redirect } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import * as gameNightTrackerApi from '../services/gameNightTrackerApi';
 
 export default function Overview({ jwtToken }) {
-    const sessions = [
+    /*const sessions = [
         {
             id: '1',
             thumbnail:
@@ -47,7 +49,16 @@ export default function Overview({ jwtToken }) {
             startDate: '31.01.2020',
             winner: 'Anna',
         },
-    ];
+    ];*/
+
+    const [sessions, setSessions] = useState([]);
+
+    useEffect(() => {
+        gameNightTrackerApi
+            .getAllSessions(jwtToken)
+            .then((sessionList) => setSessions(sessionList))
+            .catch((error) => console.error(error));
+    }, [jwtToken]);
 
     if (!jwtToken) {
         return <Redirect to="/login" />;

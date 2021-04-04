@@ -1,24 +1,26 @@
 package de.sambam.gamenighttracker.service;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.*;
+import org.hamcrest.collection.IsMapContaining;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 
 
 class UserServiceTest {
 
     private final UserDb userDb = mock(UserDb.class);
-    private final UserService userService = new UserService(userDb);
+    private final UuidGenerator uuidGenerator = mock(UuidGenerator.class);
+    private final UserService userService = new UserService(userDb, uuidGenerator);
     private final String username = "sambam";
 
     @Test
@@ -148,7 +150,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("listAllSessions() should return all game sessions")
+    @DisplayName("listAllSessions() should return all game sessions sorted by the latest date")
     public void listAllSessionsTest() {
         //GIVEN
         when(userDb.findByUserName(username)).thenReturn(Optional.of(User.builder()
@@ -160,11 +162,13 @@ class UserServiceTest {
                                 .gameSessionList(List.of(
                                         GameSession.builder()
                                                 .id("1")
+                                                .startDateTimeStamp("2020-01-01-12:00")
                                                 .sessionState("DONE")
                                                 .winnerPlayerId("Sanne")
                                                 .build(),
                                         GameSession.builder()
                                                 .id("2")
+                                                .startDateTimeStamp("2020-01-02-12:00")
                                                 .sessionState("DONE")
                                                 .winnerPlayerId("Mario")
                                                 .build()
@@ -175,6 +179,7 @@ class UserServiceTest {
                                 .gameSessionList(List.of(
                                         GameSession.builder()
                                                 .id("3")
+                                                .startDateTimeStamp("2020-01-03-12:00")
                                                 .sessionState("DONE")
                                                 .winnerPlayerId("Hanno")
                                                 .build()
@@ -183,24 +188,28 @@ class UserServiceTest {
                 .build()));
 
         //WHEN
-        List<GameSession> gameSessionList = userService.listAllSessions(username);
+        List<GameSessionDto> sessionList = userService.listAllSessions(username);
 
         //THEN
-        assertTrue(gameSessionList.equals(List.of(
-                GameSession.builder()
-                        .id("1")
-                        .sessionState("DONE")
-                        .winnerPlayerId("Sanne")
+        assertThat(sessionList.size(), is(3));
+        assertTrue(sessionList.equals(List.of(
+                GameSessionDto.builder()
+                        .id("3")
+                        .gameName("Monopoly")
+                        .startDateTimestamp("2020-01-03-12:00")
+                        .winnerPlayerId("Hanno")
                         .build(),
-                GameSession.builder()
+                GameSessionDto.builder()
                         .id("2")
-                        .sessionState("DONE")
+                        .gameName("MauMau")
+                        .startDateTimestamp("2020-01-02-12:00")
                         .winnerPlayerId("Mario")
                         .build(),
-                GameSession.builder()
-                        .id("3")
-                        .sessionState("DONE")
-                        .winnerPlayerId("Hanno")
+                GameSessionDto.builder()
+                        .id("1")
+                        .gameName("MauMau")
+                        .startDateTimestamp("2020-01-01-12:00")
+                        .winnerPlayerId("Sanne")
                         .build()
         )));
     }
@@ -216,7 +225,7 @@ class UserServiceTest {
                         .build()));
 
         //WHEN
-        List<GameSession> actual = userService.listAllSessions(username);
+        List<GameSessionDto> actual = userService.listAllSessions(username);
 
         //THEN
         assertTrue(actual.equals(List.of()));
@@ -302,6 +311,8 @@ class UserServiceTest {
                 .name("Monopoly")
                 .build();
 
+        when(uuidGenerator.generateUuiD()).thenReturn("777");
+
         //WHEN
         userService.addNewGame(gameToAdd, username);
         List<Game> actual = userDb.findByUserName(username).get().getPlayedGames();
@@ -309,6 +320,7 @@ class UserServiceTest {
         //THEN
         assertThat(actual.size(), is(2));
         assertTrue(actual.contains(Game.builder()
+                .id("777")
                 .apiGameId("234")
                 .name("Monopoly")
                 .build()));
@@ -333,7 +345,7 @@ class UserServiceTest {
         List<GameSession> sessionList2 = new ArrayList<>();
         sessionList2.add(session3);
 
-
+        when(uuidGenerator.generateUuiD()).thenReturn("089");
         when(userDb.findByUserName(username)).thenReturn(Optional.of(User.builder()
                 .id("1")
                 .userName("sambam")
@@ -367,6 +379,7 @@ class UserServiceTest {
         //THEN
         assertThat(sessionListOfMauMau.size(), is(3));
         assertTrue(sessionListOfMauMau.contains(GameSession.builder()
+                .id("089")
                 .playerList(playerList2)
                 .duration(200)
                 .build()));
