@@ -5,7 +5,7 @@ export default function SessionTile({ session }) {
     return (
         <Wrapper>
             <span>
-                <img src={session.imageUrl} alt="" />
+                <img src={session.imageUrl} alt="game box cover" />
             </span>
             <div>
                 <span>{session.startDateTimestamp.substring(0, 11)}</span>

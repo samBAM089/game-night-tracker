@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 
-const ButtonBig = styled.button`
+export default styled.button`
     border-radius: 20px;
     box-shadow: black 1px 2px;
     padding: 10px 50px;
@@ -8,6 +8,9 @@ const ButtonBig = styled.button`
     background: #c8a1a2;
     color: white;
     border: none;
-`;
 
-export default ButtonBig;
+    &:active {
+        background: none;
+        box-shadow: black 2px 2px;
+    }
+`;

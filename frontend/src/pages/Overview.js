@@ -1,11 +1,12 @@
 import SessionBoard from '../components/SessionBoard';
-import PageLayout from '../components/PageLayout';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import ButtonTabBottom from '../components/ButtonTabBottom';
-import { Redirect } from 'react-router-dom';
+import ButtonTab from '../components/ButtonTab';
+import { Redirect, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as gameNightTrackerApi from '../services/gameNightTrackerApi';
+import ButtonBig from '../components/ButtonBig';
+import Header from '../components/Header';
+import PageLayout from '../components/PageLayout';
+import Footer from '../components/Footer';
 
 export default function Overview({ jwtToken }) {
     const [sessions, setSessions] = useState([]);
@@ -25,9 +26,13 @@ export default function Overview({ jwtToken }) {
         <PageLayout>
             <Header />
             <main>
-                <SessionBoard sessions={sessions} />;
+                <SessionBoard sessions={sessions} />
             </main>
-            <ButtonTabBottom />
+            <ButtonTab>
+                <Link to={'/new'}>
+                    <ButtonBig>LET'S PLAY</ButtonBig>
+                </Link>
+            </ButtonTab>
             <Footer />
         </PageLayout>
     );

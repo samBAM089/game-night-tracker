@@ -15,7 +15,7 @@ export const SessionProvider = ({ children }) => {
 
     useEffect(() => {
         const localStorageSession = localStorage.getItem('gameNightTracker');
-        if (localStorageSession) {
+        if (localStorageSession && localStorageSession !== undefined) {
             setSession(JSON.parse(localStorageSession));
         }
     }, []);

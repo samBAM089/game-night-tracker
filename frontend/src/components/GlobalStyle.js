@@ -14,4 +14,8 @@ export default createGlobalStyle`
     color: aliceblue;
     font-family: sans-serif;
   }
+
+  Button {
+    cursor: pointer;
+  }
 `;
