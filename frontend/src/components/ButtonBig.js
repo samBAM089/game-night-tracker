@@ -11,6 +11,6 @@ export default styled.button`
 
     &:active {
         background: none;
-        box-shadow: black 2px 2px;
+        box-shadow: darkgrey 2px 2px;
     }
 `;

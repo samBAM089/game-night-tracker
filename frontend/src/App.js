@@ -4,9 +4,6 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Overview from './pages/Overview';
 import { SessionProvider } from './context/SessionProvider';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import PageLayout from './components/PageLayout';
 
 export default function App() {
     const [jwtToken, setJwtToken] = useState();

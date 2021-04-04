@@ -1,16 +1,11 @@
 import styled from 'styled-components/macro';
 
-export default function GameTile({ game, selectGame }) {
-    const onClickhandler = (event) => {
-        selectGame(game);
-    };
-
+export default function GameTile({ game, setGameToPlay }) {
     return (
         <Wrapper>
-            <button onClick={onClickhandler}>
-                <img src={game.thumbnailUrl} alt="game box cover" />
-                <span>SELECT</span>
-            </button>
+            <input type="radio" onChange={(e) => setGameToPlay(game)} />
+            <img src={game.thumbnailUrl} alt="game box cover" />
+            <span>{game.name}</span>
         </Wrapper>
     );
 }
