@@ -42,14 +42,10 @@ const Wrapper = styled.section`
     justify-items: center;
 
     img {
-        margin-top: 20px;
+        margin: 20px 0;
         max-width: 50%;
         border-bottom-right-radius: 20px;
         box-shadow: 2px 2px lightslategray;
-    }
-
-    span {
-        padding-top: 15px;
     }
 
     ul {
