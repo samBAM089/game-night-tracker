@@ -3,6 +3,7 @@ import PageLayout from '../components/PageLayout';
 import Header from '../components/Header';
 import GamesBoard from '../components/GamesBoard';
 import PlayersBoard from '../components/PlayersBoard';
+import RandomPlayerOrder from '../components/RandomPlayerOrder';
 import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import * as gameNightTrackerApi from '../services/gameNightTrackerApi';
@@ -39,10 +40,10 @@ export default function Session() {
         updateSession(gameSession);
     };
 
-    const selectPlayer = (playerList) => {
+    const selectPlayer = (players) => {
         const updatedGameSession = {
             ...session,
-            playerList: playerList,
+            playerList: players,
             status: 'randomizePlayers',
         };
         updateSession(updatedGameSession);
@@ -60,6 +61,9 @@ export default function Session() {
                         existingPlayers={existingPlayers}
                         selectPlayer={selectPlayer}
                     />
+                )}
+                {session && session.status === 'randomizePlayers' && (
+                    <RandomPlayerOrder session={session} />
                 )}
             </main>
 

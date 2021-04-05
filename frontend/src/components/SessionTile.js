@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro';
-import { AiFillStar, Gi3DStairs } from 'react-icons/all';
+import { AiFillStar, GiJeweledChalice } from 'react-icons/all';
+import { IconContext } from 'react-icons';
 
 export default function SessionTile({ session }) {
     return (
@@ -15,7 +16,19 @@ export default function SessionTile({ session }) {
                 </span>
                 <br />
                 <span>
-                    <AiFillStar /> Winner: {session.winnerPlayerId}
+                    Winner:{' '}
+                    <IconContext.Provider
+                        value={{
+                            style: {
+                                color: '#e2c617',
+                                size: '1.5em',
+                                verticalAlign: 'middle',
+                            },
+                        }}
+                    >
+                        <GiJeweledChalice />
+                    </IconContext.Provider>{' '}
+                    {session.winnerPlayerId}
                 </span>
             </div>
         </Wrapper>

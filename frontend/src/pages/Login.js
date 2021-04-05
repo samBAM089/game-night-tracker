@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { loginUser } from '../services/loginService';
 import { Redirect } from 'react-router-dom';
 import ButtonBig from '../components/ButtonBig';
+import { GiPerspectiveDiceSixFacesFour } from 'react-icons/all';
+import { IconContext } from 'react-icons';
 
 export default function Login({ setJwtToken, jwtToken }) {
     const [username, setUsername] = useState('');
@@ -30,7 +32,20 @@ export default function Login({ setJwtToken, jwtToken }) {
             <main>
                 <Wrapper>
                     <Image src="./images/gnt_logo.png" alt="appLogo" />
-                    {!error && <p>IT'S GAME TIME!</p>}
+                    {!error && (
+                        <p>
+                            <IconContext.Provider
+                                value={{
+                                    style: {
+                                        verticalAlign: 'middle',
+                                    },
+                                }}
+                            >
+                                <GiPerspectiveDiceSixFacesFour />
+                            </IconContext.Provider>{' '}
+                            IT'S GAME TIME!
+                        </p>
+                    )}
                     {error && <p>Please try again!</p>}
 
                     <Form onSubmit={handleSubmit}>

@@ -14,28 +14,36 @@ export default function GamesBoard({ games, selectGame }) {
     };
 
     return (
-        <section>
-            <Wrapper>
+        <Wrapper>
+            <List>
                 {games.map((game) => (
                     <li key={game.id}>
                         <GameTile game={game} setGameToPlay={setGameToPlay} />
                     </li>
                 ))}
-            </Wrapper>
+            </List>
+
             <ButtonTab>
                 <ButtonBig onClick={onClickHandler}>CONTINUE</ButtonBig>
             </ButtonTab>
-        </section>
+        </Wrapper>
     );
 }
 
-const Wrapper = styled.ul`
+const List = styled.ul`
+    width: 100%;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 20px 5px;
     display: grid;
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     justify-items: stretch;
     grid-gap: 10px;
+    overflow: scroll;
+`;
+
+const Wrapper = styled.section`
+    display: grid;
+    grid-template-rows: 1fr auto;
 `;

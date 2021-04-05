@@ -3,27 +3,38 @@ import styled from 'styled-components/macro';
 export default function GameTile({ game, setGameToPlay }) {
     return (
         <Wrapper>
-            <input type="radio" onChange={(e) => setGameToPlay(game)} />
-            <img src={game.thumbnailUrl} alt="game box cover" />
-            <span>{game.name}</span>
+            <label>
+                <input
+                    type="radio"
+                    name="game"
+                    onChange={(e) => setGameToPlay(game)}
+                />
+                <img src={game.thumbnailUrl} alt={game.name} />
+            </label>
         </Wrapper>
     );
 }
 
 const Wrapper = styled.section`
-    display: grid;
-    grid-template-rows: auto auto;
-
     img {
         width: 100%;
-        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        box-shadow: 2px 2px lightslategray;
+        clip: rect(80px 80px);
     }
 
-    button {
-        border: 1px solid darkgrey;
-        border-top-right-radius: 23px;
-        background: none;
-        color: darkgrey;
-        padding: 3px;
+    [type='radio'] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    [type='radio'] + img {
+        cursor: pointer;
+    }
+
+    [type='radio']:checked + img {
+        box-shadow: 2px 2px 1px 1px #e51a23;
     }
 `;

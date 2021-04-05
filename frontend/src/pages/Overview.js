@@ -33,6 +33,7 @@ export default function Overview({ jwtToken }) {
                     <ButtonBig>LET'S PLAY</ButtonBig>
                 </Link>
             </ButtonTab>
+
             <Footer />
         </PageLayout>
     );

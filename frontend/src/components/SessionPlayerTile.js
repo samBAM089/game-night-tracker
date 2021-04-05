@@ -2,19 +2,15 @@ import styled from 'styled-components/macro';
 import { Gi3DMeeple } from 'react-icons/all';
 import { IconContext } from 'react-icons';
 
-export default function PlayerTile({ existingPlayer, onChange }) {
+export default function SessionPlayerTile({ player }) {
     return (
         <Wrapper>
             <IconContext.Provider
-                value={{ color: existingPlayer.color, size: '1.5em' }}
+                value={{ color: player.color, size: '1.5em' }}
             >
                 <Gi3DMeeple />
             </IconContext.Provider>
-            <span>{existingPlayer.name}</span>
-            <input
-                type="checkbox"
-                onChange={(event) => onChange(existingPlayer, event)}
-            />
+            <span>{player.name}</span>
         </Wrapper>
     );
 }
