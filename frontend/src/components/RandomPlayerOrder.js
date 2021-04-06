@@ -11,16 +11,15 @@ export default function RandomPlayerOrder({ session, player }) {
         <Wrapper>
             <img src={session.imageUrl} alt="game cover" />
             <span>
-                FIRST{' '}
                 <IconContext.Provider
                     value={{
                         color: '#e2c617',
-                        size: '1.5em',
+                        size: '1.2em',
                     }}
                 >
                     <GiBeamsAura />
                 </IconContext.Provider>{' '}
-                PLAYER
+                FIRST PLAYER
             </span>
             <ul>
                 {session.playerList.map((player) => (

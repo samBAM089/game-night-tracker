@@ -6,19 +6,27 @@ import { useState } from 'react';
 
 export default function GamesBoard({ games, selectGame }) {
     const [gameToPlay, setGameToPlay] = useState();
+    const [noGameSelected, setNoGameSelected] = useState(false);
 
     const onClickHandler = () => {
         if (gameToPlay) {
             selectGame(gameToPlay);
+        } else {
+            setNoGameSelected(true);
         }
     };
 
     return (
         <Wrapper>
+            {noGameSelected && <span>NO GAME SELECTED!</span>}
             <List>
                 {games.map((game) => (
                     <li key={game.id}>
-                        <GameTile game={game} setGameToPlay={setGameToPlay} />
+                        <GameTile
+                            game={game}
+                            setGameToPlay={setGameToPlay}
+                            setNoGameSelected={setNoGameSelected}
+                        />
                     </li>
                 ))}
             </List>
@@ -46,4 +54,9 @@ const List = styled.ul`
 const Wrapper = styled.section`
     display: grid;
     grid-template-rows: 1fr auto;
+
+    span {
+        text-align: center;
+        margin-top: 10px;
+    }
 `;

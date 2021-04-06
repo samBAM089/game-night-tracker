@@ -1,13 +1,18 @@
 import styled from 'styled-components/macro';
 
-export default function GameTile({ game, setGameToPlay }) {
+export default function GameTile({ game, setGameToPlay, setNoGameSelected }) {
+    const handleChange = (game) => {
+        setNoGameSelected(false);
+        setGameToPlay(game);
+    };
+
     return (
         <Wrapper>
             <label>
                 <input
                     type="radio"
                     name="game"
-                    onChange={(e) => setGameToPlay(game)}
+                    onChange={(e) => handleChange(game)}
                 />
                 <img src={game.thumbnailUrl} alt={game.name} />
             </label>

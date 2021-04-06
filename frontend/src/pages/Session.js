@@ -41,12 +41,14 @@ export default function Session() {
     };
 
     const selectPlayer = (players) => {
-        const updatedGameSession = {
-            ...session,
-            playerList: players,
-            status: 'randomizePlayers',
-        };
-        updateSession(updatedGameSession);
+        if (players) {
+            const updatedGameSession = {
+                ...session,
+                playerList: players,
+                status: 'randomizePlayers',
+            };
+            updateSession(updatedGameSession);
+        }
     };
 
     return (
@@ -59,6 +61,7 @@ export default function Session() {
                 {session && session.status === 'addPlayers' && (
                     <PlayersBoard
                         existingPlayers={existingPlayers}
+                        setExistingPlayers={setExistingPlayers}
                         selectPlayer={selectPlayer}
                     />
                 )}

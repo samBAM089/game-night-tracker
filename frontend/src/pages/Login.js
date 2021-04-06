@@ -90,6 +90,7 @@ const Form = styled.form`
         border: none;
         padding: 3px;
         text-align: center;
+        outline: none;
     }
 `;
 

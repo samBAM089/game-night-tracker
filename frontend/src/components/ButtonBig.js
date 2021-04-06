@@ -8,9 +8,4 @@ export default styled.button`
     background: #c8a1a2;
     color: white;
     border: none;
-
-    &:active {
-        background: none;
-        box-shadow: darkgrey 2px 2px;
-    }
 `;
