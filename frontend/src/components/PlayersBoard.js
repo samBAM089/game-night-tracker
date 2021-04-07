@@ -64,7 +64,6 @@ export default function PlayersBoard({
             );
         }
     };
-    console.log(players);
 
     const handleClick = (event) => {
         if (players.length > 0) {

@@ -2,7 +2,7 @@ import styled from 'styled-components/macro';
 import { Gi3DMeeple } from 'react-icons/all';
 import { IconContext } from 'react-icons';
 
-export default function SessionPlayerTile({ player }) {
+export default function SessionPlayerTile({ player, firstPlayer }) {
     return (
         <Wrapper>
             <IconContext.Provider

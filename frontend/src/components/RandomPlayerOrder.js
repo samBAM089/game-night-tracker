@@ -4,13 +4,16 @@ import ButtonTab from './ButtonTab';
 import { useState } from 'react';
 import SessionPlayerTile from './SessionPlayerTile';
 import { IconContext } from 'react-icons';
-import { GiBeamsAura, GiPerspectiveDiceSixFacesFour } from 'react-icons/all';
+import { GiBeamsAura } from 'react-icons/all';
 
 export default function RandomPlayerOrder({
     session,
-    player,
     randomizePlayer,
+    setPlayersAdded,
+    startTimer,
 }) {
+    const [firstPlayer, setFirstPlayer] = useState(false);
+
     const randomizePlayerOrder = () => {
         let playerListToRandomize = [...session.playerList];
         let randomizedPlayers = [];
@@ -25,8 +28,14 @@ export default function RandomPlayerOrder({
     };
 
     const randomizeInterval = () => {
-        const intervalId = setInterval(randomizePlayerOrder, 300);
+        const intervalId = setInterval(randomizePlayerOrder, 100);
         setTimeout(() => clearInterval(intervalId), 3000);
+        setFirstPlayer(true);
+    };
+
+    const onClickHandler = () => {
+        setPlayersAdded(true);
+        startTimer();
     };
 
     return (
@@ -49,12 +58,15 @@ export default function RandomPlayerOrder({
             <ul>
                 {session.playerList.map((player) => (
                     <li key={player.name}>
-                        <SessionPlayerTile player={player} />
+                        <SessionPlayerTile
+                            player={player}
+                            firstPlayer={firstPlayer}
+                        />
                     </li>
                 ))}
             </ul>
             <ButtonTab>
-                <ButtonBig>CONTINUE</ButtonBig>
+                <ButtonBig onClick={onClickHandler}>CONTINUE</ButtonBig>
             </ButtonTab>
         </Wrapper>
     );
@@ -80,6 +92,11 @@ const Wrapper = styled.section`
 
     li {
         margin-top: 10px;
+    }
+
+    li:first-child {
+        border: 2px solid #e2c617;
+        border-radius: 7px;
     }
 `;
 

@@ -7,11 +7,14 @@ import RandomPlayerOrder from '../components/RandomPlayerOrder';
 import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import * as gameNightTrackerApi from '../services/gameNightTrackerApi';
+import SessionTimer from '../components/SessionTimer';
+import SessionEnd from '../components/SessionEnd';
 
 export default function Session() {
     const [session, updateSession] = useSession();
     const [games, setGames] = useState([]);
     const [existingPlayers, setExistingPlayers] = useState([]);
+    const [playersAdded, setPlayersAdded] = useState(false);
 
     useEffect(() => {
         gameNightTrackerApi
@@ -61,6 +64,37 @@ export default function Session() {
         }
     };
 
+    const startTimer = () => {
+        if (playersAdded) {
+            const sessionStart = {
+                ...session,
+                status: 'startSession',
+            };
+            updateSession(sessionStart);
+        }
+    };
+
+    const setStartDate = (startTime) => {
+        if (startTime) {
+            const updateSessionTime = {
+                ...session,
+                startDateTimestamp: startTime,
+            };
+            updateSession(updateSessionTime);
+        }
+    };
+
+    const setSessionDuration = (duration) => {
+        if (duration) {
+            const updateDuration = {
+                ...session,
+                duration: duration,
+                status: 'scoring',
+            };
+            updateSession(updateDuration);
+        }
+    };
+
     return (
         <PageLayout>
             <Header />
@@ -79,7 +113,18 @@ export default function Session() {
                     <RandomPlayerOrder
                         session={session}
                         randomizePlayer={randomizePlayer}
+                        setPlayersAdded={setPlayersAdded}
+                        startTimer={startTimer}
                     />
+                )}
+                {session && session.status === 'startSession' && (
+                    <SessionTimer
+                        setStartDate={setStartDate}
+                        setSessionDuration={setSessionDuration}
+                    />
+                )}
+                {session && session.status === 'scoring' && (
+                    <SessionEnd session={session} />
                 )}
             </main>
 
