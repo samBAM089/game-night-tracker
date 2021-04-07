@@ -3,6 +3,7 @@ import ButtonTab from './ButtonTab';
 import PlayerTile from './PlayerTile';
 import ButtonBig from './ButtonBig';
 import { useState } from 'react';
+import getRandomColorCode from '../services/getRandomColorCode';
 
 export default function PlayersBoard({
     existingPlayers,
@@ -15,15 +16,6 @@ export default function PlayersBoard({
     const [noPlayersSelected, setNoPlayersSelected] = useState(false);
 
     const hasPlayerToAdd = playerToAdd.length > 0;
-
-    const getRandomColorCode = () => {
-        let makeColorCode = '0123456789ABCDEF';
-        let code = '#';
-        for (let count = 0; count < 6; count++) {
-            code = code + makeColorCode[Math.floor(Math.random() * 16)];
-        }
-        return code;
-    };
 
     const handleChange = (event) => {
         setError(false);

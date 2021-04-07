@@ -51,6 +51,16 @@ export default function Session() {
         }
     };
 
+    const randomizePlayer = (playerListToRandomize) => {
+        if (playerListToRandomize) {
+            const updatedPlayerList = {
+                ...session,
+                playerList: playerListToRandomize,
+            };
+            updateSession(updatedPlayerList);
+        }
+    };
+
     return (
         <PageLayout>
             <Header />
@@ -66,7 +76,10 @@ export default function Session() {
                     />
                 )}
                 {session && session.status === 'randomizePlayers' && (
-                    <RandomPlayerOrder session={session} />
+                    <RandomPlayerOrder
+                        session={session}
+                        randomizePlayer={randomizePlayer}
+                    />
                 )}
             </main>
 
