@@ -84,6 +84,10 @@ const Wrapper = styled.section`
         box-shadow: 2px 2px lightslategray;
     }
 
+    span {
+        padding-top: 10px;
+    }
+
     ul {
         list-style: none;
         padding: 0 20px;

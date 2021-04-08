@@ -15,10 +15,10 @@ export default function SessionTimer({ setStartDate, setSessionDuration }) {
     const onClickToStart = () => {
         let startDate = new Date();
         let startDateTimeStamp = startDate.getTime();
-        console.log(startDate);
-        console.log(startDateTimeStamp);
         setStartTimeForSession(startDateTimeStamp);
         setStartDate(startDate);
+        console.log(startDate);
+        console.log(startDateTimeStamp);
         run();
         const intervalId = setInterval(run, 1000);
         setIntervalId(intervalId);
@@ -148,12 +148,12 @@ const Wrapper = styled.div`
     }
 
     .two {
-        color: goldenrod;
+        color: gold;
         animation-delay: 1s;
     }
 
     .three {
-        color: mediumaquamarine;
+        color: lightskyblue;
         animation-delay: 2s;
     }
 
@@ -171,7 +171,7 @@ const MeepleX = styled(GiMeeple)`
 
 const Meeple = styled(GiMeeple)`
     margin: 0 20px 5px 20px;
-    color: lightcoral;
+    color: firebrick;
     transform: scale(3);
     -webkit-animation: Meeple 4s infinite linear;
     animation: Meeple 4s infinite linear;

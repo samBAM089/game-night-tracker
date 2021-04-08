@@ -4,21 +4,26 @@ import ButtonTab from './ButtonTab';
 import ButtonBig from './ButtonBig';
 
 export default function SessionEnd({ session }) {
+    const onSubmitHandler = (event) => {
+        console.log('DONE');
+    };
+
     return (
         <Wrapper>
             <img src={session.imageUrl} alt="game cover" />
             <p>PLAY TIME: {session.duration} Minutes</p>
-
-            <ul>
-                {session.playerList.map((player) => (
-                    <li key={player.name}>
-                        <SessionEndPlayerTile player={player} />
-                    </li>
-                ))}
-            </ul>
-            <ButtonTab>
-                <ButtonBig>SAVE</ButtonBig>
-            </ButtonTab>
+            <form onSubmit={onSubmitHandler}>
+                <ul>
+                    {session.playerList.map((player) => (
+                        <li key={player.name}>
+                            <SessionEndPlayerTile player={player} />
+                        </li>
+                    ))}
+                </ul>
+                <ButtonTab>
+                    <ButtonBig type="submit">SAVE</ButtonBig>
+                </ButtonTab>
+            </form>
         </Wrapper>
     );
 }

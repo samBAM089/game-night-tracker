@@ -11,9 +11,10 @@ export default function SessionTile({ session }) {
             <div>
                 <span>{session.startDateTimestamp.substring(0, 11)}</span>
                 <br />
-                <span>
-                    <h2>{session.gameName}</h2>
-                </span>
+                <span className="name">{session.gameName}</span>
+                <br />
+                <br />
+                <span>{session.duration} Mins</span>
                 <br />
                 <span>
                     Winner:{' '}
@@ -58,7 +59,8 @@ const Wrapper = styled.section`
         box-shadow: 2px 2px lightslategray;
     }
 
-    h2 {
+    .name {
+        font-size: 1.5em;
         padding: 0;
         margin: 0;
     }
