@@ -64,15 +64,15 @@ class UserControllerTest {
         Player player6 = Player.builder().name("samBAM").color("yellow").score(70)
                 .build();
         GameSession session1 = GameSession.builder()
-                .id("1").sessionState("DONE").winnerPlayerId("Mario")
+                .id("1").winnerPlayerId("Mario")
                 .playerList(List.of(player1, player2))
                 .build();
         GameSession session2 = GameSession.builder()
-                .id("2").sessionState("DONE").winnerPlayerId("samBAM")
+                .id("2").winnerPlayerId("samBAM")
                 .playerList(List.of(player3, player4))
                 .build();
         GameSession session3 = GameSession.builder()
-                .id("3").sessionState("DONE").winnerPlayerId("Sanne")
+                .id("3").winnerPlayerId("Sanne")
                 .playerList(List.of(player5, player6))
                 .build();
         Game game1 = Game.builder()
@@ -123,7 +123,6 @@ class UserControllerTest {
                         .releaseYear("2020")
                         .gameSessionList(List.of(GameSession.builder()
                                 .id("1")
-                                .sessionState("DONE")
                                 .winnerPlayerId("Mario")
                                 .playerList(List.of(
                                         Player.builder().name("Mario").color("red").score(123)
@@ -139,7 +138,6 @@ class UserControllerTest {
                         .releaseYear("2020")
                         .gameSessionList(List.of(GameSession.builder()
                                 .id("2")
-                                .sessionState("DONE")
                                 .winnerPlayerId("samBAM")
                                 .playerList(List.of(
                                         Player.builder().name("samBAM").color("yellow").score(100)
@@ -155,7 +153,6 @@ class UserControllerTest {
                         .releaseYear("2020")
                         .gameSessionList(List.of(GameSession.builder()
                                 .id("3")
-                                .sessionState("DONE")
                                 .winnerPlayerId("Sanne")
                                 .playerList(List.of(
                                         Player.builder().name("Sanne").color("blue").score(80)
@@ -229,11 +226,11 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("POST request to /user/game/{apiGameId}/gamesession should add new session to Db")
+    @DisplayName("POST request to /user/savesession should add new session to Db")
     public void addNewGameSessionTest() {
         //GIVEN
         String apiGameId = "123";
-        GameSession sessionToAdd = GameSession.builder().sessionState("DONE").winnerPlayerId("samBAM").build();
+        GameSessionDto sessionToAdd = GameSessionDto.builder().apiGameId(apiGameId).winnerPlayerId("samBAM").build();
 
         when(uuidGenerator.generateUuiD()).thenReturn("089");
 
@@ -241,9 +238,9 @@ class UserControllerTest {
         String jwtToken = logintoApp();
         HttpHeaders header = new HttpHeaders();
         header.setBearerAuth(jwtToken);
-        HttpEntity<GameSession> entity = new HttpEntity<>(sessionToAdd, header);
+        HttpEntity<GameSessionDto> entity = new HttpEntity<>(sessionToAdd, header);
         ResponseEntity<GameSession> postResponse = testRestTemplate.exchange(
-                "http://localhost:" + port + "user/game/" + apiGameId + "/gamesessions",
+                "http://localhost:" + port + "user/savesession",
                 HttpMethod.POST, entity, GameSession.class);
 
 
@@ -251,7 +248,7 @@ class UserControllerTest {
         assertThat(postResponse.getStatusCode(), is(HttpStatus.OK));
         assertEquals(postResponse.getBody(), GameSession.builder()
                 .id("089")
-                .sessionState("DONE").winnerPlayerId("samBAM")
+                .winnerPlayerId("samBAM")
                 .build());
 
         Optional<Game> match = userDb.findByUserName("sanne").get().getPlayedGames().stream()
@@ -262,7 +259,6 @@ class UserControllerTest {
         List<GameSession> sessionList = match.get().getGameSessionList();
         assertThat(sessionList, hasItem(GameSession.builder()
                 .id("089")
-                .sessionState("DONE")
                 .winnerPlayerId("samBAM")
                 .build()));
     }

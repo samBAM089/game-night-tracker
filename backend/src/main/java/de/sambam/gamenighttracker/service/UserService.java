@@ -53,6 +53,7 @@ public class UserService {
                     GameSessionDto sessionDto;
                     sessionDto = new GameSessionDto(
                             session.getId(),
+                            game.getApiGameId(),
                             game.getName(),
                             game.getThumbnailUrl(),
                             session.getStartDateTimeStamp(),
@@ -138,9 +139,15 @@ public class UserService {
         return Optional.of(newGame);
     }
 
-    public Optional<GameSession> addNewGameSession(GameSession newSession, String username, String
+    public Optional<GameSession> addNewGameSession(GameSessionDto newSessionDto, String username, String
             apiGameId) {
         Optional<User> user = userDb.findByUserName(username);
+        GameSession newSession = GameSession.builder()
+                .startDateTimeStamp(newSessionDto.getStartDateTimestamp())
+                .winnerPlayerId(newSessionDto.getWinnerPlayerId())
+                .playerList(newSessionDto.getPlayerList())
+                .duration(newSessionDto.getDuration())
+                .build();
 
         if (user.isEmpty()) {
             return Optional.empty();

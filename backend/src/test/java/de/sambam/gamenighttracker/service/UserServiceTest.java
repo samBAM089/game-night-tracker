@@ -116,7 +116,6 @@ class UserServiceTest {
                                 .releaseYear("1950")
                                 .gameSessionList(List.of(
                                         GameSession.builder()
-                                                .sessionState("PREP")
                                                 .playerList(List.of())
                                                 .build()
                                 ))
@@ -163,13 +162,11 @@ class UserServiceTest {
                                         GameSession.builder()
                                                 .id("1")
                                                 .startDateTimeStamp("2020-01-01-12:00")
-                                                .sessionState("DONE")
                                                 .winnerPlayerId("Sanne")
                                                 .build(),
                                         GameSession.builder()
                                                 .id("2")
                                                 .startDateTimeStamp("2020-01-02-12:00")
-                                                .sessionState("DONE")
                                                 .winnerPlayerId("Mario")
                                                 .build()
                                 ))
@@ -180,7 +177,6 @@ class UserServiceTest {
                                         GameSession.builder()
                                                 .id("3")
                                                 .startDateTimeStamp("2020-01-03-12:00")
-                                                .sessionState("DONE")
                                                 .winnerPlayerId("Hanno")
                                                 .build()
                                 ))
@@ -362,7 +358,7 @@ class UserServiceTest {
                                 .build()))
                 .build()));
 
-        GameSession sessionToAdd = GameSession.builder()
+        GameSessionDto sessionToAdd = GameSessionDto.builder()
                 .playerList(playerList2)
                 .duration(200)
                 .build();
@@ -396,8 +392,7 @@ class UserServiceTest {
                         .build()));
 
         //WHEN
-        GameSession sessionToAdd = GameSession.builder()
-                .sessionState("DONE")
+        GameSessionDto sessionToAdd = GameSessionDto.builder()
                 .playerList(List.of())
                 .build();
         String apiGameId = "123";

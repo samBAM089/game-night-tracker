@@ -48,7 +48,7 @@ const List = styled.ul`
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     justify-items: stretch;
     grid-gap: 10px;
-    overflow: scroll;
+    overflow-y: scroll;
 `;
 
 const Wrapper = styled.section`

@@ -18,6 +18,5 @@ public class GameSession {
     private String startDateTimeStamp;
     private int duration;
     private List<Player> playerList;
-    private String sessionState;
     private String winnerPlayerId;
 }

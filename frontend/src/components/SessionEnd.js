@@ -2,10 +2,38 @@ import SessionEndPlayerTile from './SessionEndPlayerTile';
 import styled from 'styled-components/macro';
 import ButtonTab from './ButtonTab';
 import ButtonBig from './ButtonBig';
+import { useState, useEffect } from 'react';
 
-export default function SessionEnd({ session }) {
+export default function SessionEnd({ session, setFinalPlayerList, setWinner }) {
+    const [playersWithScores, setPlayersWithScores] = useState([]);
+
+    useEffect(() => {
+        setPlayersWithScores(session.playerList);
+    }, []);
+
     const onSubmitHandler = (event) => {
-        console.log('DONE');
+        event.preventDefault();
+
+        const playerScores = playersWithScores.map((player) => player.score);
+
+        playerScores.sort(function (a, b) {
+            return b - a;
+        });
+
+        const winner = playersWithScores.filter(
+            (player) => player.score === playerScores[0]
+        );
+
+        const scoresAndWinner = {
+            playerList: playersWithScores,
+            winnerPlayerId: winner,
+        };
+
+        if (scoresAndWinner) {
+            setFinalPlayerList(scoresAndWinner);
+        } else {
+            console.log('no playersWithScore');
+        }
     };
 
     return (
@@ -16,7 +44,11 @@ export default function SessionEnd({ session }) {
                 <ul>
                     {session.playerList.map((player) => (
                         <li key={player.name}>
-                            <SessionEndPlayerTile player={player} />
+                            <SessionEndPlayerTile
+                                player={player}
+                                playersWithScores={playersWithScores}
+                                setPlayersWithScores={setPlayersWithScores}
+                            />
                         </li>
                     ))}
                 </ul>

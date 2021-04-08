@@ -32,6 +32,7 @@ export default function Session() {
 
     const selectGame = (gameToPlay) => {
         const gameSession = {
+            apiGameId: gameToPlay.apiGameId,
             gameName: gameToPlay.name,
             imageUrl: gameToPlay.thumbnailUrl,
             startDateTimestamp: '',
@@ -65,13 +66,11 @@ export default function Session() {
     };
 
     const startTimer = () => {
-        if (playersAdded) {
-            const sessionStart = {
-                ...session,
-                status: 'startSession',
-            };
-            updateSession(sessionStart);
-        }
+        const sessionStart = {
+            ...session,
+            status: 'startSession',
+        };
+        updateSession(sessionStart);
     };
 
     const setStartDate = (startTime) => {
@@ -93,6 +92,16 @@ export default function Session() {
             };
             updateSession(updateDuration);
         }
+    };
+
+    const setFinalPlayerList = (scoresAndWinner) => {
+        const updatedScores = {
+            ...session,
+            playerList: scoresAndWinner.playerList,
+            winnerPlayerId: scoresAndWinner.winnerPlayerId,
+        };
+        console.log(updatedScores);
+        updateSession(updatedScores);
     };
 
     return (
@@ -124,7 +133,10 @@ export default function Session() {
                     />
                 )}
                 {session && session.status === 'scoring' && (
-                    <SessionEnd session={session} />
+                    <SessionEnd
+                        session={session}
+                        setFinalPlayerList={setFinalPlayerList}
+                    />
                 )}
             </main>
 

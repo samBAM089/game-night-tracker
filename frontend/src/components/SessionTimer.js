@@ -92,7 +92,7 @@ export default function SessionTimer({ setStartDate, setSessionDuration }) {
                     <span>{timer.s >= 10 ? timer.s : '0' + timer.s}</span>
                 </section>
 
-                <ButtonTab>
+                <div>
                     <ButtonBig
                         onClick={onClickToStart}
                         disabled={gameHasStarted}
@@ -105,7 +105,7 @@ export default function SessionTimer({ setStartDate, setSessionDuration }) {
                     >
                         STOP
                     </ButtonBig>
-                </ButtonTab>
+                </div>
             </Wrapper>
             <ButtonTab>
                 <ButtonBig

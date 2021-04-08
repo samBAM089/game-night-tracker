@@ -2,7 +2,37 @@ import { IconContext } from 'react-icons';
 import { Gi3DMeeple } from 'react-icons/all';
 import styled from 'styled-components/macro';
 
-export default function SessionEndPlayerTile({ player }) {
+export default function SessionEndPlayerTile({
+    player,
+    playersWithScores,
+    setPlayersWithScores,
+}) {
+    const onChangeHandler = (player, event) => {
+        console.log(event.target.value);
+
+        const playerWithScore = {
+            name: player.name,
+            color: player.color,
+            score: event.target.value,
+        };
+
+        if (
+            !playersWithScores.some(
+                (player) => player.name === playerWithScore.name
+            )
+        ) {
+            setPlayersWithScores([...playersWithScores, playerWithScore]);
+        } else {
+            setPlayersWithScores(
+                playersWithScores.map((player) =>
+                    player.name === playerWithScore.name
+                        ? playerWithScore
+                        : player
+                )
+            );
+        }
+    };
+
     return (
         <Wrapper>
             <IconContext.Provider
@@ -11,7 +41,11 @@ export default function SessionEndPlayerTile({ player }) {
                 <Gi3DMeeple />
             </IconContext.Provider>
             <span>{player.name}</span>
-            <input type="text" placeholder="SCORE" />
+            <input
+                type="text"
+                placeholder="SCORE"
+                onChange={(event) => onChangeHandler(player, event)}
+            />
         </Wrapper>
     );
 }
