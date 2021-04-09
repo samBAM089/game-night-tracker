@@ -9,26 +9,30 @@ import { useState, useEffect } from 'react';
 import * as gameNightTrackerApi from '../services/gameNightTrackerApi';
 import SessionTimer from '../components/SessionTimer';
 import SessionEnd from '../components/SessionEnd';
+import SessionBoard from '../components/SessionBoard';
+import { useHistory } from 'react-router';
 
-export default function Session() {
+export default function Session({ jwtToken }) {
     const [session, updateSession] = useSession();
     const [games, setGames] = useState([]);
     const [existingPlayers, setExistingPlayers] = useState([]);
-    const [playersAdded, setPlayersAdded] = useState(false);
+    const history = useHistory();
 
     useEffect(() => {
-        gameNightTrackerApi
-            .getAllGames()
-            .then((gamelist) => setGames(gamelist))
-            .catch((error) => console.error(error));
-    }, []);
+        jwtToken &&
+            gameNightTrackerApi
+                .getAllGames(jwtToken)
+                .then((gameList) => setGames(gameList))
+                .catch((error) => console.error(error));
+    }, [jwtToken]);
 
     useEffect(() => {
-        gameNightTrackerApi
-            .getAllPlayers()
-            .then((playersInDb) => setExistingPlayers(playersInDb))
-            .catch((error) => console.error(error));
-    }, []);
+        jwtToken &&
+            gameNightTrackerApi
+                .getAllPlayers(jwtToken)
+                .then((playersInDb) => setExistingPlayers(playersInDb))
+                .catch((error) => console.error(error));
+    }, [jwtToken]);
 
     const selectGame = (gameToPlay) => {
         const gameSession = {
@@ -84,14 +88,12 @@ export default function Session() {
     };
 
     const setSessionDuration = (duration) => {
-        if (duration) {
-            const updateDuration = {
-                ...session,
-                duration: duration,
-                status: 'scoring',
-            };
-            updateSession(updateDuration);
-        }
+        const updateDuration = {
+            ...session,
+            duration: duration,
+            status: 'scoring',
+        };
+        updateSession(updateDuration);
     };
 
     const setFinalPlayerList = (scoresAndWinner) => {
@@ -102,6 +104,11 @@ export default function Session() {
         };
         console.log(updatedScores);
         updateSession(updatedScores);
+
+        gameNightTrackerApi
+            .saveSession(jwtToken, updatedScores)
+            .then(() => history.push('/'))
+            .catch((error) => console.error(error));
     };
 
     return (
@@ -122,7 +129,6 @@ export default function Session() {
                     <RandomPlayerOrder
                         session={session}
                         randomizePlayer={randomizePlayer}
-                        setPlayersAdded={setPlayersAdded}
                         startTimer={startTimer}
                     />
                 )}
@@ -138,6 +144,7 @@ export default function Session() {
                         setFinalPlayerList={setFinalPlayerList}
                     />
                 )}
+                {session && session.status === 'endSession' && <SessionBoard />}
             </main>
 
             <Footer />

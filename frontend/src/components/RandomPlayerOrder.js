@@ -5,11 +5,11 @@ import { useState } from 'react';
 import SessionPlayerTile from './SessionPlayerTile';
 import { IconContext } from 'react-icons';
 import { GiBeamsAura } from 'react-icons/all';
+import ButtonSmall from './ButtonSmall';
 
 export default function RandomPlayerOrder({
     session,
     randomizePlayer,
-    setPlayersAdded,
     startTimer,
 }) {
     const [firstPlayer, setFirstPlayer] = useState(false);
@@ -34,7 +34,6 @@ export default function RandomPlayerOrder({
     };
 
     const onClickHandler = () => {
-        setPlayersAdded(true);
         startTimer();
     };
 
@@ -109,13 +108,15 @@ const Inner = styled.div`
     grid-template-columns: 1fr auto;
     grid-gap: 10px;
     padding-bottom: 10px;
+    align-items: center;
 
     button {
         font-size: 0.6em;
-        padding: 0 10px;
-        margin: 0;
+        padding: 5px 10px;
+        margin-top: 10px;
         border-radius: 20px;
         border: none;
         box-shadow: black 1px 2px;
+        outline: none;
     }
 `;

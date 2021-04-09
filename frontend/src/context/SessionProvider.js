@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 export const SessionContext = createContext();
 
@@ -8,18 +8,7 @@ export const SessionProvider = ({ children }) => {
     const updateSession = (updatedSession) => {
         console.log(updatedSession);
         setSession(updatedSession);
-        localStorage.setItem(
-            'gameNightTracker',
-            JSON.stringify(updatedSession)
-        );
     };
-
-    useEffect(() => {
-        const localStorageSession = localStorage.getItem('gameNightTracker');
-        if (localStorageSession && localStorageSession !== undefined) {
-            setSession(JSON.parse(localStorageSession));
-        }
-    }, []);
 
     return (
         <SessionContext.Provider value={[session, updateSession]}>

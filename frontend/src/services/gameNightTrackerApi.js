@@ -14,3 +14,10 @@ export const getAllPlayers = (token) =>
     axios
         .get('user/players', { headers: { Authorization: 'Bearer ' + token } })
         .then((response) => response.data);
+
+export const saveSession = (token, session) =>
+    axios
+        .post('user/savesession', session, {
+            headers: { Authorization: 'Bearer ' + token },
+        })
+        .then((response) => response.data);

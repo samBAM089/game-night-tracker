@@ -4,7 +4,7 @@ import ButtonTab from './ButtonTab';
 import ButtonBig from './ButtonBig';
 import { useState, useEffect } from 'react';
 
-export default function SessionEnd({ session, setFinalPlayerList, setWinner }) {
+export default function SessionEnd({ session, setFinalPlayerList }) {
     const [playersWithScores, setPlayersWithScores] = useState([]);
 
     useEffect(() => {
@@ -20,10 +20,10 @@ export default function SessionEnd({ session, setFinalPlayerList, setWinner }) {
             return b - a;
         });
 
-        const winner = playersWithScores.filter(
+        const winnerWithScore = playersWithScores.filter(
             (player) => player.score === playerScores[0]
         );
-
+        const winner = winnerWithScore[0].name;
         const scoresAndWinner = {
             playerList: playersWithScores,
             winnerPlayerId: winner,

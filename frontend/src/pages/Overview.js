@@ -12,10 +12,11 @@ export default function Overview({ jwtToken }) {
     const [sessions, setSessions] = useState([]);
 
     useEffect(() => {
-        gameNightTrackerApi
-            .getAllSessions(jwtToken)
-            .then((sessionList) => setSessions(sessionList))
-            .catch((error) => console.error(error));
+        jwtToken &&
+            gameNightTrackerApi
+                .getAllSessions(jwtToken)
+                .then((sessionList) => setSessions(sessionList))
+                .catch((error) => console.error(error));
     }, [jwtToken]);
 
     if (!jwtToken) {

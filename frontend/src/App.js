@@ -1,6 +1,6 @@
 import Session from './pages/Session';
 import Login from './pages/Login';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Overview from './pages/Overview';
 import { SessionProvider } from './context/SessionProvider';
@@ -19,7 +19,7 @@ export default function App() {
                         <Login setJwtToken={setJwtToken} jwtToken={jwtToken} />
                     </Route>
                     <Route path="/new">
-                        <Session />
+                        <Session jwtToken={jwtToken} />
                     </Route>
                 </Switch>
             </Router>
