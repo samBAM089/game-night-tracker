@@ -6,12 +6,12 @@
 
 ---
 
-As my first coded web application from scratch, i had to go for something that i feel could be useful to many gamers  
+For my first web application coded from scratch, i had to go for something that i feel could be useful to many gamers  
 around the globe. Modern board gamers love to track their game nights and log e.g. their scores and play time, over the
-course of their gaming "career" - which usually does not end, if you get bitten by the board game bug. Many people even
-take it as a challenge and get motivated to play even more by tracking their stats. And while there are already a few
-apps out there, i have been missing the **all-in-one solution** - one that follows the flow of the typical game
-session... what, who, how long, results.
+course of their gaming "career" - which usually does not end for a couple years, if you get bitten by the board game
+bug. Many people even take it as a challenge and get motivated to play even more to improve their stats. And while there
+are already a few apps out there, i have been missing the **all-in-one solution** - one that follows the flow of the
+typical game session... what, who, how long, results.
 
 ## Features
 
@@ -23,4 +23,9 @@ session... what, who, how long, results.
 - Save action will automatically render the session on the first page
 
 ![](images/gnt.png)
+
+## Data Model
+
+All data are connected to the logged in user, who is stored in a MongoDB. This has resulted in an user object with lots
+of nested data, which was a big challenge to handle properly.
 
