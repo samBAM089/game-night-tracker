@@ -70,5 +70,7 @@ const Wrapper = styled.section`
         padding: 3px;
         width: 80%;
         font-size: 0.6em;
+        border-radius: 3px;
+        border: none;
     }
 `;

@@ -2,7 +2,7 @@ import styled from 'styled-components/macro';
 import { Gi3DMeeple } from 'react-icons/all';
 import { IconContext } from 'react-icons';
 
-export default function SessionPlayerTile({ player, firstPlayer }) {
+export default function SessionPlayerTile({ player }) {
     return (
         <Wrapper>
             <IconContext.Provider
@@ -26,8 +26,12 @@ const Wrapper = styled.section`
     justify-items: center;
     grid-template-columns: 1fr 1fr 1fr;
 
-    input {
-        margin-left: 20px;
-        padding: 0;
+    span {
+        font-size: 1em;
+        padding-bottom: 5px;
+
+        /* overflow: hidden;
+     text-overflow: ellipsis;
+     white-space: nowrap;*/
     }
 `;

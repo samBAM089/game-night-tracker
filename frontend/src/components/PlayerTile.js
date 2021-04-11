@@ -30,6 +30,10 @@ const Wrapper = styled.section`
     justify-items: center;
     grid-template-columns: 1fr 1fr 1fr;
 
+    span {
+        text-align: left;
+    }
+
     input {
         margin-left: 20px;
         padding: 0;

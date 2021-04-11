@@ -24,7 +24,8 @@ const Wrapper = styled.section`
     img {
         width: 100%;
         border-bottom-right-radius: 20px;
-        box-shadow: 2px 2px lightslategray;
+        border-right: 1px solid rgba(103, 103, 184, 0.53);
+        border-bottom: 1px solid rgba(103, 103, 184, 0.53);
         clip: rect(80px 80px);
     }
 

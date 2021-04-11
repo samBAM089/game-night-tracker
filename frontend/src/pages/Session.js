@@ -107,6 +107,7 @@ export default function Session({ jwtToken }) {
 
         gameNightTrackerApi
             .saveSession(jwtToken, updatedScores)
+            .then(updateSession(null))
             .then(() => history.push('/'))
             .catch((error) => console.error(error));
     };
@@ -114,38 +115,35 @@ export default function Session({ jwtToken }) {
     return (
         <PageLayout>
             <Header />
-            <main>
-                {!session && (
-                    <GamesBoard games={games} selectGame={selectGame} />
-                )}
-                {session && session.status === 'addPlayers' && (
-                    <PlayersBoard
-                        existingPlayers={existingPlayers}
-                        setExistingPlayers={setExistingPlayers}
-                        selectPlayer={selectPlayer}
-                    />
-                )}
-                {session && session.status === 'randomizePlayers' && (
-                    <RandomPlayerOrder
-                        session={session}
-                        randomizePlayer={randomizePlayer}
-                        startTimer={startTimer}
-                    />
-                )}
-                {session && session.status === 'startSession' && (
-                    <SessionTimer
-                        setStartDate={setStartDate}
-                        setSessionDuration={setSessionDuration}
-                    />
-                )}
-                {session && session.status === 'scoring' && (
-                    <SessionEnd
-                        session={session}
-                        setFinalPlayerList={setFinalPlayerList}
-                    />
-                )}
-                {session && session.status === 'endSession' && <SessionBoard />}
-            </main>
+            {!session && <GamesBoard games={games} selectGame={selectGame} />}
+            {session && session.status === 'addPlayers' && (
+                <PlayersBoard
+                    existingPlayers={existingPlayers}
+                    setExistingPlayers={setExistingPlayers}
+                    selectPlayer={selectPlayer}
+                />
+            )}
+            {session && session.status === 'randomizePlayers' && (
+                <RandomPlayerOrder
+                    session={session}
+                    randomizePlayer={randomizePlayer}
+                    startTimer={startTimer}
+                />
+            )}
+            {session && session.status === 'startSession' && (
+                <SessionTimer
+                    setStartDate={setStartDate}
+                    setSessionDuration={setSessionDuration}
+                    session={session}
+                />
+            )}
+            {session && session.status === 'scoring' && (
+                <SessionEnd
+                    session={session}
+                    setFinalPlayerList={setFinalPlayerList}
+                />
+            )}
+            {session && session.status === 'endSession' && <SessionBoard />}
 
             <Footer />
         </PageLayout>

@@ -3,22 +3,19 @@ import SessionTile from './SessionTile';
 
 export default function SessionBoard({ sessions }) {
     return (
-        <>
-            <Wrapper>
-                {sessions.map((session) => (
-                    <li key={session.id}>
-                        <SessionTile session={session} />
-                    </li>
-                ))}
-            </Wrapper>
-        </>
+        <Wrapper>
+            {sessions.map((session) => (
+                <li key={session.id}>
+                    <SessionTile session={session} />
+                </li>
+            ))}
+        </Wrapper>
     );
 }
 
 const Wrapper = styled.ul`
     display: grid;
     justify-content: space-around;
-    height: 100%;
     background: none;
     overflow-y: scroll;
     list-style: none;

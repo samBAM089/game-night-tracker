@@ -17,26 +17,41 @@ export default function GamesBoard({ games, selectGame }) {
     };
 
     return (
-        <Wrapper>
-            {noGameSelected && <span>NO GAME SELECTED!</span>}
-            <List>
-                {games.map((game) => (
-                    <li key={game.id}>
-                        <GameTile
-                            game={game}
-                            setGameToPlay={setGameToPlay}
-                            setNoGameSelected={setNoGameSelected}
-                        />
-                    </li>
-                ))}
-            </List>
-
+        <>
+            <Wrapper>
+                {noGameSelected && <span>PLEASE SELECT A GAME!</span>}
+                <List>
+                    {games.map((game) => (
+                        <li key={game.id}>
+                            <GameTile
+                                game={game}
+                                setGameToPlay={setGameToPlay}
+                                setNoGameSelected={setNoGameSelected}
+                            />
+                        </li>
+                    ))}
+                </List>
+            </Wrapper>
             <ButtonTab>
                 <ButtonBig onClick={onClickHandler}>CONTINUE</ButtonBig>
             </ButtonTab>
-        </Wrapper>
+        </>
     );
 }
+
+const Wrapper = styled.section`
+    display: grid;
+    grid-template-rows: 1fr auto;
+    height: 100%;
+    background: var(--primary);
+    padding: 0 16px;
+    overflow-y: hidden;
+
+    span {
+        text-align: center;
+        margin-top: 10px;
+    }
+`;
 
 const List = styled.ul`
     width: 100%;
@@ -49,14 +64,4 @@ const List = styled.ul`
     justify-items: stretch;
     grid-gap: 10px;
     overflow-y: scroll;
-`;
-
-const Wrapper = styled.section`
-    display: grid;
-    grid-template-rows: 1fr auto;
-
-    span {
-        text-align: center;
-        margin-top: 10px;
-    }
 `;

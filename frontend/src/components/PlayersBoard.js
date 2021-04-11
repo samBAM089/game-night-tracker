@@ -74,7 +74,7 @@ export default function PlayersBoard({
     };
 
     return (
-        <section>
+        <>
             <Wrapper>
                 <Form onSubmit={handleSubmit}>
                     <input
@@ -83,73 +83,66 @@ export default function PlayersBoard({
                         placeholder="NEW PLAYER"
                         onChange={(event) => handleChange(event)}
                     />
-                    <button type="submit" disabled={!hasPlayerToAdd}>
+                    <ButtonBig type="submit" disabled={!hasPlayerToAdd}>
                         +
-                    </button>
+                    </ButtonBig>
                 </Form>
                 {error && <p>Player already exists!</p>}
                 {noPlayersSelected && <p>No players selected!</p>}
-                <List>
-                    {existingPlayers &&
-                        existingPlayers.map((existingPlayer) => (
-                            <li key={existingPlayer.name}>
-                                <PlayerTile
-                                    existingPlayer={existingPlayer}
-                                    onChange={onChange}
-                                />
-                            </li>
-                        ))}
-                </List>
+                <div className="listbox">
+                    <List>
+                        {existingPlayers &&
+                            existingPlayers.map((existingPlayer) => (
+                                <li key={existingPlayer.name}>
+                                    <PlayerTile
+                                        existingPlayer={existingPlayer}
+                                        onChange={onChange}
+                                    />
+                                </li>
+                            ))}
+                    </List>
+                </div>
             </Wrapper>
             <ButtonTab>
                 <ButtonBig onClick={() => handleClick()}>CONTINUE</ButtonBig>
             </ButtonTab>
-        </section>
+        </>
     );
 }
 
 const Wrapper = styled.section`
+    background: var(--primary);
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto auto;
+    overflow: hidden;
 
     p {
         padding: 0;
         margin: 0;
         text-align: center;
     }
+
+    .listbox {
+        overflow-y: scroll;
+    }
 `;
 
 const Form = styled.form`
     max-width: 100%;
-    margin: 15px;
+
+    padding: 0 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 5px;
     justify-content: center;
     align-items: center;
 
     input {
-        padding: 3px;
-        border-radius: 10px;
+        padding: 10px 5px;
+        margin: 15px;
+        border-radius: 3px;
         text-align: center;
         border: none;
         outline: none;
-    }
-
-    button {
-        margin: 8px;
-        padding: 2px;
-        border-radius: 20px;
-        background: none;
-        color: white;
-        border: 1px solid darkgrey;
-
-        &:enabled {
-            background: #c8a1a2;
-            color: white;
-            box-shadow: black 1px 2px;
-            border: none;
-        }
     }
 `;
 

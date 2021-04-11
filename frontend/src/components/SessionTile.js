@@ -56,7 +56,8 @@ const Wrapper = styled.section`
     img {
         border-bottom-right-radius: 20px;
         max-width: 80px;
-        box-shadow: 2px 2px lightslategray;
+        border-right: 1px solid rgba(103, 103, 184, 0.53);
+        border-bottom: 1px solid rgba(103, 103, 184, 0.53);
     }
 
     .name {

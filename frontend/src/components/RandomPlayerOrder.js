@@ -3,9 +3,6 @@ import ButtonBig from './ButtonBig';
 import ButtonTab from './ButtonTab';
 import { useState } from 'react';
 import SessionPlayerTile from './SessionPlayerTile';
-import { IconContext } from 'react-icons';
-import { GiBeamsAura } from 'react-icons/all';
-import ButtonSmall from './ButtonSmall';
 
 export default function RandomPlayerOrder({
     session,
@@ -38,49 +35,43 @@ export default function RandomPlayerOrder({
     };
 
     return (
-        <Wrapper>
-            <img src={session.imageUrl} alt="game cover" />
-            <Inner>
-                <span>
-                    <IconContext.Provider
-                        value={{
-                            color: '#e2c617',
-                            size: '1.2em',
-                        }}
-                    >
-                        <GiBeamsAura />
-                    </IconContext.Provider>{' '}
-                    FIRST PLAYER
-                </span>
-                <button onClick={randomizeInterval}>RANDOMIZE</button>
-            </Inner>
-            <ul>
-                {session.playerList.map((player) => (
-                    <li key={player.name}>
-                        <SessionPlayerTile
-                            player={player}
-                            firstPlayer={firstPlayer}
-                        />
-                    </li>
-                ))}
-            </ul>
+        <>
+            <Wrapper>
+                <img src={session.imageUrl} alt="game cover" />
+                <ul>
+                    {session.playerList.map((player) => (
+                        <li key={player.name}>
+                            <SessionPlayerTile
+                                player={player}
+                                firstPlayer={firstPlayer}
+                            />
+                        </li>
+                    ))}
+                </ul>
+                <ButtonBig className="randomizer" onClick={randomizeInterval}>
+                    RANDOMIZE
+                </ButtonBig>
+            </Wrapper>
             <ButtonTab>
                 <ButtonBig onClick={onClickHandler}>CONTINUE</ButtonBig>
             </ButtonTab>
-        </Wrapper>
+        </>
     );
 }
 
 const Wrapper = styled.section`
+    background: var(--primary);
     display: grid;
-    grid-template-rows: auto auto 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
     justify-items: center;
+    overflow-y: hidden;
 
     img {
         margin: 20px 0;
         max-width: 50%;
         border-bottom-right-radius: 20px;
-        box-shadow: 2px 2px lightslategray;
+        border-right: 2px solid rgba(103, 103, 184, 0.53);
+        border-bottom: 2px solid rgba(103, 103, 184, 0.53);
     }
 
     span {
@@ -91,32 +82,14 @@ const Wrapper = styled.section`
         list-style: none;
         padding: 0 20px;
         margin-top: 0;
+        overflow-y: scroll;
     }
 
     li {
         margin-top: 10px;
     }
 
-    li:first-child {
-        border: 2px solid #e2c617;
-        border-radius: 7px;
-    }
-`;
-
-const Inner = styled.div`
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-gap: 10px;
-    padding-bottom: 10px;
-    align-items: center;
-
-    button {
-        font-size: 0.6em;
-        padding: 5px 10px;
-        margin-top: 10px;
-        border-radius: 20px;
-        border: none;
-        box-shadow: black 1px 2px;
-        outline: none;
+    .randomizer {
+        padding: 10px 45px;
     }
 `;

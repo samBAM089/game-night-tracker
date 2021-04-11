@@ -4,7 +4,11 @@ import ButtonBig from './ButtonBig';
 import ButtonTab from './ButtonTab';
 import { GiMeeple } from 'react-icons/all';
 
-export default function SessionTimer({ setStartDate, setSessionDuration }) {
+export default function SessionTimer({
+    setStartDate,
+    setSessionDuration,
+    session,
+}) {
     const [timer, setTimer] = useState({ s: 0, m: 0, h: 0 });
     const [startTimeForSession, setStartTimeForSession] = useState('');
     const [stopTimeForSession, setStopTimeForSession] = useState('');
@@ -26,11 +30,24 @@ export default function SessionTimer({ setStartDate, setSessionDuration }) {
     };
 
     const onClickToStop = () => {
-        let stopDateTimeStamp = new Date().getTime();
+        let stopDate = new Date();
+        let stopDateTimeStamp = stopDate.getTime();
+        console.log(stopDate);
         setStopTimeForSession(stopDateTimeStamp);
         console.log(stopTimeForSession);
+
         clearInterval(intervalId);
         setGameHasStarted(false);
+        const gameDuration = (
+            (new Date().getTime() - startTimeForSession) /
+            1000 /
+            60
+        )
+            .toString()
+            .split('.')[0];
+
+        console.log(gameDuration);
+        setDuration(gameDuration);
     };
 
     let updatedS = timer.s,
@@ -51,39 +68,13 @@ export default function SessionTimer({ setStartDate, setSessionDuration }) {
     };
 
     const goToScoring = () => {
-        const gameDuration = (
-            (stopTimeForSession - startTimeForSession) /
-            1000 /
-            60
-        )
-            .toString()
-            .split('.')[0];
-
-        console.log(gameDuration);
-        setDuration(gameDuration);
         setSessionDuration(duration);
     };
 
     return (
         <>
             <Wrapper>
-                <p>QUALITY TIME</p>
-                {!gameHasStarted && (
-                    <section>
-                        <MeepleX />
-                        <MeepleX />
-                        <MeepleX />
-                        <MeepleX />
-                    </section>
-                )}
-                {gameHasStarted && (
-                    <section>
-                        <Meeple />
-                        <Meeple className="two" />
-                        <Meeple className="three" />
-                        <Meeple className="four" />
-                    </section>
-                )}
+                <img src={session.imageUrl} alt="game cover" />
                 <section className="timer">
                     <span>{timer.h >= 10 ? timer.h : '0' + timer.h}</span>
                     &nbsp;:&nbsp;
@@ -91,6 +82,22 @@ export default function SessionTimer({ setStartDate, setSessionDuration }) {
                     &nbsp;:&nbsp;
                     <span>{timer.s >= 10 ? timer.s : '0' + timer.s}</span>
                 </section>
+                {!gameHasStarted && (
+                    <MeepleSection>
+                        <MeepleX />
+                        <MeepleX />
+                        <MeepleX />
+                        <MeepleX />
+                    </MeepleSection>
+                )}
+                {gameHasStarted && (
+                    <MeepleSection>
+                        <Meeple />
+                        <Meeple className="two" />
+                        <Meeple className="three" />
+                        <Meeple className="four" />
+                    </MeepleSection>
+                )}
 
                 <div>
                     <ButtonBig
@@ -120,23 +127,25 @@ export default function SessionTimer({ setStartDate, setSessionDuration }) {
 }
 
 const Wrapper = styled.div`
-    box-sizing: border-box;
     display: grid;
-    grid-template-rows: auto 1fr auto;
-    grid-gap: 30px;
-    justify-content: stretch;
-    text-align: center;
+    grid-template-rows: auto auto auto auto;
+    justify-items: center;
+    height: 100%;
+    background: var(--primary);
+    padding: 0 16px;
+    overflow-y: hidden;
 
-    p {
-        margin: 20px;
-        text-align: center;
-        font-size: 1em;
+    img {
+        margin: 20px 0;
+        max-width: 50%;
+        border-bottom-right-radius: 20px;
+        border-right: 2px solid rgba(103, 103, 184, 0.53);
+        border-bottom: 2px solid rgba(103, 103, 184, 0.53);
     }
 
     .timer {
+        margin-top: 20px;
         text-align: center;
-
-        margin: 50px 30px;
     }
 
     span {
@@ -161,16 +170,31 @@ const Wrapper = styled.div`
         color: lightgreen;
         animation-delay: 3s;
     }
+
+    div {
+        align-self: end;
+        margin-top: 15px;
+        text-align: center;
+    }
+`;
+
+const MeepleSection = styled.section`
+    padding: 0 20px;
+    margin: 15px 0;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    justify-items: center;
+    align-self: center;
 `;
 
 const MeepleX = styled(GiMeeple)`
-    margin: 0 20px 5px 20px;
     color: white;
     transform: scale(3);
+    margin: 25px 20px;
 `;
 
 const Meeple = styled(GiMeeple)`
-    margin: 0 20px 5px 20px;
+    margin: 25px 20px;
     color: firebrick;
     transform: scale(3);
     -webkit-animation: Meeple 4s infinite linear;

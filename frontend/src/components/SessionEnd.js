@@ -37,26 +37,28 @@ export default function SessionEnd({ session, setFinalPlayerList }) {
     };
 
     return (
-        <Wrapper>
-            <img src={session.imageUrl} alt="game cover" />
-            <p>PLAY TIME: {session.duration} Minutes</p>
-            <form onSubmit={onSubmitHandler}>
-                <ul>
-                    {session.playerList.map((player) => (
-                        <li key={player.name}>
-                            <SessionEndPlayerTile
-                                player={player}
-                                playersWithScores={playersWithScores}
-                                setPlayersWithScores={setPlayersWithScores}
-                            />
-                        </li>
-                    ))}
-                </ul>
-                <ButtonTab>
-                    <ButtonBig type="submit">SAVE</ButtonBig>
-                </ButtonTab>
-            </form>
-        </Wrapper>
+        <>
+            <Wrapper>
+                <img src={session.imageUrl} alt="game cover" />
+                <p>PLAY TIME: {session.duration} Minutes</p>
+                <Form onSubmit={onSubmitHandler}>
+                    <ul>
+                        {session.playerList.map((player) => (
+                            <li key={player.name}>
+                                <SessionEndPlayerTile
+                                    player={player}
+                                    playersWithScores={playersWithScores}
+                                    setPlayersWithScores={setPlayersWithScores}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                    <ButtonTab>
+                        <ButtonBig type="submit">SAVE</ButtonBig>
+                    </ButtonTab>
+                </Form>
+            </Wrapper>
+        </>
     );
 }
 
@@ -65,21 +67,36 @@ const Wrapper = styled.section`
     grid-template-rows: auto auto 1fr;
     justify-items: center;
 
+    height: 100%;
+    background: var(--primary);
+    padding: 0 16px;
+    overflow-y: hidden;
+
     img {
         margin: 20px 0;
         max-width: 50%;
         border-bottom-right-radius: 20px;
-        box-shadow: 2px 2px lightslategray;
+        border-right: 2px solid rgba(103, 103, 184, 0.53);
+        border-bottom: 2px solid rgba(103, 103, 184, 0.53);
     }
 
     p {
-        margin: 0;
-        padding: 0;
+        margin: 5px;
+        padding-bottom: 5px;
+    }
+
+    form {
+        overflow-y: scroll;
     }
 
     ul {
         list-style: none;
         margin: 0;
-        padding: 20px;
+        padding: 5px 20px;
     }
+`;
+
+const Form = styled.form`
+    display: grid;
+    grid-template-rows: 1fr auto;
 `;
