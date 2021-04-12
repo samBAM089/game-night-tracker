@@ -2,7 +2,7 @@
 
 # GAME NIGHT TRACKER
 
-&#127922; Everything a modern board gamer needs besides games and players. &#x1f3b2;
+Everything a modern board gamer needs besides games and players.
 
 ---
 
@@ -21,11 +21,23 @@ typical game session... what, who, how long, results.
 - Animated randomizer for player order
 - Timer for game duration including little animation
 - Save action will automatically render the session on the first page
+  [status after 4 weeks]
 
 ![](images/gnt.png)
 
 ## Data Model
 
-All data are connected to the logged in user, who is stored in a MongoDB. This has resulted in an user object with lots
+All data are connected to the logged-in user, who is stored in a MongoDB. This has resulted in an user object with lots
 of nested data, which was a big challenge to handle properly.
 
+![](images/data_model.png)
+
+## Outlook
+
+This application has a lot more in the works to improve the experience.
+
+- API call to public boardgame database to automatically add a new game to session
+- Output of different stats like total play time, win rates, high scores,...
+- Ultimately, a native app which can be downloaded to your mobile device
+
+Thanks for stopping by! (^_^)b
