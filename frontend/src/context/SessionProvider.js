@@ -6,7 +6,6 @@ export const SessionProvider = ({ children }) => {
     const [session, setSession] = useState();
 
     const updateSession = (updatedSession) => {
-        console.log(updatedSession);
         setSession(updatedSession);
     };
 

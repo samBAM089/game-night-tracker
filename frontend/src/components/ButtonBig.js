@@ -14,10 +14,4 @@ export default styled.button`
         background: none;
         border: 1px solid white;
     }
-
-    /*&:enabled {
-    background: #c8a1a2;
-    color: white;
-    box-shadow: black 1px 2px;
-    border: none;*/
 `;

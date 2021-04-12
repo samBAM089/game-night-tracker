@@ -12,10 +12,10 @@ export default function RandomPlayerOrder({
     const [firstPlayer, setFirstPlayer] = useState(false);
 
     const randomizePlayerOrder = () => {
-        let playerListToRandomize = [...session.playerList];
-        let randomizedPlayers = [];
+        const playerListToRandomize = [...session.playerList];
+        const randomizedPlayers = [];
         while (playerListToRandomize.length > 0) {
-            let randomIndex = Math.floor(
+            const randomIndex = Math.floor(
                 Math.random() * playerListToRandomize.length
             );
             randomizedPlayers.push(playerListToRandomize[randomIndex]);

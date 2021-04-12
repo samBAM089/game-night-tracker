@@ -8,8 +8,6 @@ export default function SessionEndPlayerTile({
     setPlayersWithScores,
 }) {
     const onChangeHandler = (player, event) => {
-        console.log(event.target.value);
-
         const playerWithScore = {
             name: player.name,
             color: player.color,

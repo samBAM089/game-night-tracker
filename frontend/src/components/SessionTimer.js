@@ -17,12 +17,10 @@ export default function SessionTimer({
     const [duration, setDuration] = useState();
 
     const onClickToStart = () => {
-        let startDate = new Date();
+        const startDate = new Date();
         let startDateTimeStamp = startDate.getTime();
         setStartTimeForSession(startDateTimeStamp);
         setStartDate(startDate);
-        console.log(startDate);
-        console.log(startDateTimeStamp);
         run();
         const intervalId = setInterval(run, 1000);
         setIntervalId(intervalId);
@@ -30,11 +28,9 @@ export default function SessionTimer({
     };
 
     const onClickToStop = () => {
-        let stopDate = new Date();
+        const stopDate = new Date();
         let stopDateTimeStamp = stopDate.getTime();
-        console.log(stopDate);
         setStopTimeForSession(stopDateTimeStamp);
-        console.log(stopTimeForSession);
 
         clearInterval(intervalId);
         setGameHasStarted(false);
@@ -46,7 +42,6 @@ export default function SessionTimer({
             .toString()
             .split('.')[0];
 
-        console.log(gameDuration);
         setDuration(gameDuration);
     };
 
@@ -76,11 +71,17 @@ export default function SessionTimer({
             <Wrapper>
                 <img src={session.imageUrl} alt="game cover" />
                 <section className="timer">
-                    <span>{timer.h >= 10 ? timer.h : '0' + timer.h}</span>
-                    &nbsp;:&nbsp;
-                    <span>{timer.m >= 10 ? timer.m : '0' + timer.m}</span>
-                    &nbsp;:&nbsp;
-                    <span>{timer.s >= 10 ? timer.s : '0' + timer.s}</span>
+                    <span className="time">
+                        {timer.h >= 10 ? timer.h : '0' + timer.h}
+                    </span>
+                    <span className="colon">:</span>
+                    <span className="time">
+                        {timer.m >= 10 ? timer.m : '0' + timer.m}
+                    </span>
+                    <span className="colon">:</span>
+                    <span className="time">
+                        {timer.s >= 10 ? timer.s : '0' + timer.s}
+                    </span>
                 </section>
                 {!gameHasStarted && (
                     <MeepleSection>
@@ -148,11 +149,15 @@ const Wrapper = styled.div`
         text-align: center;
     }
 
-    span {
+    .time {
         border: 1px solid white;
         border-radius: 5px;
         padding: 20px;
         margin: 0 5px;
+        font-size: 2em;
+    }
+
+    .colon {
         font-size: 2em;
     }
 

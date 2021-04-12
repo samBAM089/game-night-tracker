@@ -59,7 +59,7 @@ export default function Session({ jwtToken }) {
         }
     };
 
-    const randomizePlayer = (playerListToRandomize) => {
+    const randomizePlayers = (playerListToRandomize) => {
         if (playerListToRandomize) {
             const updatedPlayerList = {
                 ...session,
@@ -126,7 +126,7 @@ export default function Session({ jwtToken }) {
             {session && session.status === 'randomizePlayers' && (
                 <RandomPlayerOrder
                     session={session}
-                    randomizePlayer={randomizePlayer}
+                    randomizePlayer={randomizePlayers}
                     startTimer={startTimer}
                 />
             )}

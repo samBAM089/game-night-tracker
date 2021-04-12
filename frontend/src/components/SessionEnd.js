@@ -31,8 +31,6 @@ export default function SessionEnd({ session, setFinalPlayerList }) {
 
         if (scoresAndWinner) {
             setFinalPlayerList(scoresAndWinner);
-        } else {
-            console.log('no playersWithScore');
         }
     };
 

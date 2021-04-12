@@ -33,7 +33,7 @@ export default function PlayersBoard({
         };
         if (existingPlayers.length > 0) {
             if (
-                !existingPlayers.find(
+                !existingPlayers.some(
                     (existingPlayer) => existingPlayer.name === playerToAdd
                 )
             ) {
@@ -89,19 +89,17 @@ export default function PlayersBoard({
                 </Form>
                 {error && <p>Player already exists!</p>}
                 {noPlayersSelected && <p>No players selected!</p>}
-                <div className="listbox">
-                    <List>
-                        {existingPlayers &&
-                            existingPlayers.map((existingPlayer) => (
-                                <li key={existingPlayer.name}>
-                                    <PlayerTile
-                                        existingPlayer={existingPlayer}
-                                        onChange={onChange}
-                                    />
-                                </li>
-                            ))}
-                    </List>
-                </div>
+                <List>
+                    {existingPlayers &&
+                        existingPlayers.map((existingPlayer) => (
+                            <li key={existingPlayer.name}>
+                                <PlayerTile
+                                    existingPlayer={existingPlayer}
+                                    onChange={onChange}
+                                />
+                            </li>
+                        ))}
+                </List>
             </Wrapper>
             <ButtonTab>
                 <ButtonBig onClick={() => handleClick()}>CONTINUE</ButtonBig>
@@ -120,10 +118,6 @@ const Wrapper = styled.section`
         padding: 0;
         margin: 0;
         text-align: center;
-    }
-
-    .listbox {
-        overflow-y: scroll;
     }
 `;
 
@@ -153,4 +147,5 @@ const List = styled.ul`
     display: grid;
     justify-content: center;
     grid-gap: 10px;
+    overflow-y: scroll;
 `;
