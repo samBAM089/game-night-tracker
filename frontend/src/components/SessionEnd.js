@@ -9,6 +9,7 @@ export default function SessionEnd({ session, setFinalPlayerList }) {
 
     useEffect(() => {
         setPlayersWithScores(session.playerList);
+        // eslint-disable-next-line
     }, []);
 
     const onSubmitHandler = (event) => {
