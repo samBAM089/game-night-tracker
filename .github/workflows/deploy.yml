@@ -1,0 +1,65 @@
+name: Deploy game-night-tracker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: build frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+      - name: upload frontend
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend-build
+          path: frontend/build/
+
+  build-backend:
+    runs-on: ubuntu-latest
+    needs: build-frontend
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 15
+        uses: actions/setup-java@v1
+        with:
+          java-version: 15
+      - name: download frontend build
+        uses: actions/download-artifact@v2
+        with:
+          name: frontend-build
+          path: backend/src/main/resources/static
+      - name: Build with Maven
+        run: mvn -B package --file backend/pom.xml
+      - name: upload backend
+        uses: actions/upload-artifact@v2
+        with:
+          name: game-night-tracker.jar
+          path: backend/target/game-night-tracker.jar
+
+  deploy-to-heroku:
+    runs-on: ubuntu-latest
+    needs: build-backend
+    environment:
+      name: production
+      url: https://game-night-tracker.herokuapp.com/
+    env:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: game-night-tracker.jar
+          path: backend/target
+      - run: heroku container:login
+      - run: heroku container:push web -a game-night-tracker
+      - run: heroku container:release web -a game-night-tracker
