@@ -7,6 +7,7 @@ export default function Footer() {
             <a
                 href="https://www.instagram.com/brettspielfieber/?hl=de}"
                 target="_blank"
+                rel="noreferrer"
             >
                 <img src="./images/bf-logo.png" alt=" logo" />
             </a>
