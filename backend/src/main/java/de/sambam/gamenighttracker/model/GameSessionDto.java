@@ -16,6 +16,7 @@ import java.util.List;
 public class GameSessionDto implements Comparable<GameSessionDto> {
 
     private String id;
+    private String apiGameId;
     private String gameName;
     private String imageUrl;
     private String startDateTimestamp;

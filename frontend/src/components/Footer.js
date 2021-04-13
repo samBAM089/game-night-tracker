@@ -6,7 +6,7 @@ export default function Footer() {
             <h5>powered by</h5>
             <a
                 href="https://www.instagram.com/brettspielfieber/?hl=de}"
-                target="blank"
+                target="_blank"
             >
                 <img src="./images/bf-logo.png" alt=" logo" />
             </a>
@@ -20,7 +20,7 @@ const Wrapper = styled.section`
     background: var(--primary);
     margin: 0;
     padding: 0;
-    border: none;
+    border-top: 2px solid var(--primary);
 
     img {
         width: 20px;

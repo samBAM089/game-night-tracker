@@ -53,13 +53,12 @@ public class UserController {
         }
     }
 
-    @PostMapping("/game/{apiGameId}/gamesessions")
-    public Optional<GameSession> addNewGameSession(@RequestBody GameSession newSession,
-                                                   @PathVariable String apiGameId,
+    @PostMapping("/savesession")
+    public Optional<GameSession> addNewGameSession(@RequestBody GameSessionDto newSessionDto,
                                                    Principal principal) {
         String loggedInUsername = principal.getName();
         try {
-            return userService.addNewGameSession(newSession, loggedInUsername, apiGameId);
+            return userService.addNewGameSession(newSessionDto, loggedInUsername, newSessionDto.getApiGameId());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No sessionList was generated!");
         }

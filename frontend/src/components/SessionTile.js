@@ -1,19 +1,36 @@
 import styled from 'styled-components/macro';
+import { AiFillStar, GiJeweledChalice } from 'react-icons/all';
+import { IconContext } from 'react-icons';
 
 export default function SessionTile({ session }) {
     return (
         <Wrapper>
             <span>
-                <img src={session.imageUrl} alt="" />
+                <img src={session.imageUrl} alt="game box cover" />
             </span>
             <div>
-                <span>{session.startDateTimestamp.substring(0, 11)}</span>
+                <span>{session.startDateTimestamp.substring(0, 10)}</span>
+                <br />
+                <span className="name">{session.gameName}</span>
+                <br />
+                <br />
+                <span>{session.duration} Mins</span>
                 <br />
                 <span>
-                    <h2>{session.gameName}</h2>
+                    Winner:{' '}
+                    <IconContext.Provider
+                        value={{
+                            style: {
+                                color: '#e2c617',
+                                size: '1.5em',
+                                verticalAlign: 'middle',
+                            },
+                        }}
+                    >
+                        <GiJeweledChalice />
+                    </IconContext.Provider>{' '}
+                    {session.winnerPlayerId}
                 </span>
-                <br />
-                <span>Winner: {session.winnerPlayerId}</span>
             </div>
         </Wrapper>
     );
@@ -39,11 +56,17 @@ const Wrapper = styled.section`
     img {
         border-bottom-right-radius: 20px;
         max-width: 80px;
-        box-shadow: 2px 2px lightslategray;
+        border-right: 1px solid rgba(103, 103, 184, 0.53);
+        border-bottom: 1px solid rgba(103, 103, 184, 0.53);
     }
 
-    h2 {
+    .name {
+        font-size: 1.5em;
         padding: 0;
         margin: 0;
+    }
+
+    button {
+        font-size: 0.8em;
     }
 `;

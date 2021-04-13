@@ -2,17 +2,10 @@ package de.sambam.gamenighttracker.service;
 
 import de.sambam.gamenighttracker.db.UserDb;
 import de.sambam.gamenighttracker.model.*;
-import de.sambam.gamenighttracker.service.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Immutable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
@@ -53,6 +46,7 @@ public class UserService {
                     GameSessionDto sessionDto;
                     sessionDto = new GameSessionDto(
                             session.getId(),
+                            game.getApiGameId(),
                             game.getName(),
                             game.getThumbnailUrl(),
                             session.getStartDateTimeStamp(),
@@ -138,9 +132,15 @@ public class UserService {
         return Optional.of(newGame);
     }
 
-    public Optional<GameSession> addNewGameSession(GameSession newSession, String username, String
+    public Optional<GameSession> addNewGameSession(GameSessionDto newSessionDto, String username, String
             apiGameId) {
         Optional<User> user = userDb.findByUserName(username);
+        GameSession newSession = GameSession.builder()
+                .startDateTimeStamp(newSessionDto.getStartDateTimestamp())
+                .winnerPlayerId(newSessionDto.getWinnerPlayerId())
+                .playerList(newSessionDto.getPlayerList())
+                .duration(newSessionDto.getDuration())
+                .build();
 
         if (user.isEmpty()) {
             return Optional.empty();

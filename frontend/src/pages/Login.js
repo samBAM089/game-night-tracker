@@ -4,6 +4,9 @@ import Footer from '../components/Footer';
 import { useState } from 'react';
 import { loginUser } from '../services/loginService';
 import { Redirect } from 'react-router-dom';
+import ButtonBig from '../components/ButtonBig';
+import { GiPerspectiveDiceSixFacesFour } from 'react-icons/all';
+import { IconContext } from 'react-icons';
 
 export default function Login({ setJwtToken, jwtToken }) {
     const [username, setUsername] = useState('');
@@ -29,7 +32,20 @@ export default function Login({ setJwtToken, jwtToken }) {
             <main>
                 <Wrapper>
                     <Image src="./images/gnt_logo.png" alt="appLogo" />
-                    {!error && <p>IT'S GAME TIME!</p>}
+                    {!error && (
+                        <p>
+                            <IconContext.Provider
+                                value={{
+                                    style: {
+                                        verticalAlign: 'middle',
+                                    },
+                                }}
+                            >
+                                <GiPerspectiveDiceSixFacesFour />
+                            </IconContext.Provider>{' '}
+                            IT'S GAME TIME!
+                        </p>
+                    )}
                     {error && <p>Please try again!</p>}
 
                     <Form onSubmit={handleSubmit}>
@@ -46,7 +62,7 @@ export default function Login({ setJwtToken, jwtToken }) {
                             onChange={({ target }) => setPassword(target.value)}
                         />
 
-                        <button type="submit">Login</button>
+                        <ButtonBig type="submit">Login</ButtonBig>
                     </Form>
                 </Wrapper>
             </main>
@@ -74,16 +90,7 @@ const Form = styled.form`
         border: none;
         padding: 3px;
         text-align: center;
-    }
-
-    button {
-        border-radius: 20px;
-        padding: 10px 50px;
-        margin: 8px;
-        background: #c8a1a2;
-        box-shadow: black 1px 2px;
-        color: white;
-        border: none;
+        outline: none;
     }
 `;
 
