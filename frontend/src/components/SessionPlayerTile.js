@@ -1,4 +1,3 @@
-import styled from 'styled-components/macro';
 import { Gi3DMeeple } from 'react-icons/all';
 import { IconContext } from 'react-icons';
 import TileLayout from './TileLayout';

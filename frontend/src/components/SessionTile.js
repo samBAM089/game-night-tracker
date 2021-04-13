@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import { AiFillStar, GiJeweledChalice } from 'react-icons/all';
+import { GiJeweledChalice } from 'react-icons/all';
 import { IconContext } from 'react-icons';
 
 export default function SessionTile({ session }) {
