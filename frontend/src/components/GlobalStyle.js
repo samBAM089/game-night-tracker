@@ -13,9 +13,16 @@ export default createGlobalStyle`
     margin: 0;
     color: aliceblue;
     font-family: sans-serif;
+
+    @media (min-width: 400px) {
+      width: 500px;
+    }
   }
 
   Button {
     cursor: pointer;
   }
+
+
+
 `;

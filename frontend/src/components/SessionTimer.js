@@ -142,6 +142,10 @@ const Wrapper = styled.div`
         border-bottom-right-radius: 20px;
         border-right: 2px solid rgba(103, 103, 184, 0.53);
         border-bottom: 2px solid rgba(103, 103, 184, 0.53);
+
+        @media (min-width: 500px) {
+            width: 220px;
+        }
     }
 
     .timer {

@@ -148,4 +148,8 @@ const List = styled.ul`
     justify-content: center;
     grid-gap: 10px;
     overflow-y: scroll;
+
+    @media (min-width: 500px) {
+        overflow-y: hidden;
+    }
 `;

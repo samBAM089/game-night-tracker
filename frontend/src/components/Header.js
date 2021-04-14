@@ -20,5 +20,9 @@ const Wrapper = styled.header`
         text-align: center;
         margin: 5px 0 0 0;
         width: 90vw;
+
+        @media (min-width: 500px) {
+            width: 90%;
+        }
     }
 `;
