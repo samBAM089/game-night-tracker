@@ -1,7 +1,7 @@
 spring:
   data:
     mongoDb:
-      database: gameNightTracker
+      database: game-night-tracker
 security:
   jwt:
     secret: top-secret
