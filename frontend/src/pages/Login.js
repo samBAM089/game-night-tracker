@@ -92,8 +92,17 @@ const Form = styled.form`
         text-align: center;
         outline: none;
     }
+
+    @media (min-width: 500px) {
+        width: 50%;
+    }
 `;
 
 const Image = styled.img`
     width: 70%;
+
+    @media (min-width: 500px) {
+        padding-top: 20px;
+        width: 50%;
+    }
 `;

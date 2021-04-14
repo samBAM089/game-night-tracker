@@ -60,36 +60,44 @@ export default function RandomPlayerOrder({
 }
 
 const Wrapper = styled.section`
-    background: var(--primary);
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    justify-items: center;
-    overflow-y: hidden;
+  background: var(--primary);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  overflow-y: hidden;
 
-    img {
-        margin: 20px 0;
-        max-width: 50%;
-        border-bottom-right-radius: 20px;
-        border-right: 2px solid rgba(103, 103, 184, 0.53);
-        border-bottom: 2px solid rgba(103, 103, 184, 0.53);
+  img {
+    margin: 20px 0;
+    max-width: 50%;
+    border-bottom-right-radius: 20px;
+    border-right: 2px solid rgba(103, 103, 184, 0.53);
+    border-bottom: 2px solid rgba(103, 103, 184, 0.53);
+
+    @media (min-width: 500px) {
+      width: 220px;
     }
 
-    span {
-        padding-top: 10px;
-    }
+  }
 
-    ul {
-        list-style: none;
-        padding: 0 20px;
-        margin-top: 0;
-        overflow-y: scroll;
+  span {
+    padding-top: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0 20px;
+    margin-top: 0;
+    overflow-y: scroll;
+
+    @media (min-width: 500px) {
+      overflow-y: hidden;
     }
 
     li {
-        margin-top: 10px;
+      margin-top: 10px;
     }
 
     .randomizer {
-        padding: 10px 45px;
+      padding: 10px 45px;
     }
 `;

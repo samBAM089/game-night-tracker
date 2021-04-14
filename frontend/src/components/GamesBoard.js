@@ -64,4 +64,8 @@ const List = styled.ul`
     justify-items: stretch;
     grid-gap: 10px;
     overflow-y: scroll;
+
+    @media (min-width: 500px) {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
 `;
